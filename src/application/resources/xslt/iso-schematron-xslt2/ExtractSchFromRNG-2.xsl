@@ -1,0 +1,1 @@
+	<!-- match schema and call recursive template to extract included schemas -->

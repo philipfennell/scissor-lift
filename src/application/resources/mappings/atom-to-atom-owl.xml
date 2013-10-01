@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<sl:mapping
+    xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:sl="https://github.com/philipfennell/scissor-lift">
+	<sl:title>Simple Atom Feed Mapping Rules</sl:title>
+	<sl:pattern>
+		<sl:title>Atom Feed Root</sl:title>
+		<sl:rule context="/">
+		  <sl:triple match="atom:feed">
+		    <sl:uri>#</sl:uri>
+		    <sl:uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</sl:uri>
+		    <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#Feed</sl:uri>
+		  </sl:triple>
+		</sl:rule>
+	</sl:pattern>
+	<sl:pattern>
+		<sl:title>Required elements of an Atom Feed</sl:title>
+		<sl:rule context="/atom:feed">
+		  <sl:assert test="atom:title">This element must be present for the feed to be valid</sl:assert>
+		  <sl:triple match="atom:title">
+		    <sl:uri>#</sl:uri>
+		    <sl:uri>'http://bblfish.net/work/atom-owl/2006-06-06/#title</sl:uri>
+		    <sl:plainLiteral xml:lang="en-GB" select="atom:title"/>
+		  </sl:triple>
+		  <sl:triple match="atom:id">
+		    <sl:uri>#</sl:uri>
+		    <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#id</sl:uri>
+		    <sl:typedLiteral datatype="http://www.w3.org/2001/XMLSchema#anyURI" select="atom:id"/>
+		  </sl:triple>
+		  <sl:triple match="atom:updated">
+		    <sl:uri>#</sl:uri>
+		    <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#updated</sl:uri>
+		    <sl:typedLiteral datatype="http://www.w3.org/2001/XMLSchema#dateTime" select="atom:updated"/>
+		  </sl:triple>
+		</sl:rule>
+	</sl:pattern>
+</sl:mapping>

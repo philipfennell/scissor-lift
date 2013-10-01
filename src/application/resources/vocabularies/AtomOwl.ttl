@@ -1,0 +1,559 @@
+# published under a New BSD license as described at http://opensource.org/licenses/bsd-license.php  
+   @prefix awol: <http://bblfish.net/work/atom-owl/2006-06-06/#> .
+   @prefix owl:  <http://www.w3.org/2002/07/owl#> .
+   @prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+   @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+   @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+   @prefix foaf: <http://xmlns.com/foaf/0.1/> .    
+   @prefix webarch: <http://sw.nokia.com/WebArch-1/> .
+   @prefix vs:   <http://www.w3.org/2003/06/sw-vocab-status/ns#> .
+   @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+   @prefix dc:   <http://purl.org/dc/elements/1.1/> .
+   @prefix iana: <http://www.iana.org/assignments/relation/> .
+   @prefix cifp: <http://eulersharp.sourceforge.net/2004/04test/rogier#>.
+   @prefix log:  <http://www.w3.org/2000/10/swap/log#> .
+	
+
+    <http://bblfish.net/work/atom-owl/2006-06-06/>   a owl:Ontology, owl:Thing;
+         rdfs:comment "The AtomOWL ontology is inspired from the work done by the atom working group. This ontology is working off the rfc 4287 published among othe places at http://www.atompub.org/rfc4287.html . The AtomOWL ontology uses as much as possible the same terms as the format there to make the relation easy to understand. The AtomOWL name space is slightly different from the atom namespace [see post http://www.imc.org/atom-syntax/mail-archive/msg16476.html]. But this is a good thing as it helps distinguish the ontology from the rfc 4287 serialisation."@en ;
+          dc:creator "Henry Story"@en;
+          dc:contributor "Reto Bachmann-Gmuer"@en;
+          dc:contributor "Danny Ayers"@en;
+          dc:contributor "Elias Torres"@en;
+          dc:created "2005-10-23";
+          dc:title "Atom Syndication Ontology"@en;
+	  owl:imports <http://xmlns.com/foaf/0.1/index.rdf>;
+	  owl:imports <http://www.w3.org/2004/02/skos/core/owl-dl/skos-core-owl-dl.owl>;
+	  owl:imports <http://purl.org/dc/elements/1.1/> .
+
+#meta properties
+    
+    awol:retosNote  a owl:AnnotationProperty;
+          rdfs:subPropertyOf skos:editorialNote;
+          rdfs:comment "A comment by Reto Bachmann-Gmuer"@en.
+		
+    awol:dannyNote  a owl:AnnotationProperty; 
+          rdfs:subPropertyOf skos:editorialNote;
+          rdfs:comment "A comment by Danny Ayers"@en.
+
+    awol:eliasNote  a owl:AnnotationProperty; 
+          rdfs:subPropertyOf skos:editorialNote;
+          rdfs:comment "A comment by Elias Torres"@en.
+    
+#
+# Classes
+#
+   awol:Category     a owl:Class;
+         rdfs:label   "Category Class";
+         awol:retosNote "The construct with term and scheme looks very much like a URI-Ref used in RDF. Isn't this just any rdfs:Resource? Maybe skos:Concept could be used as range of :category."@en;
+         rdfs:comment "see §4.2.2 of rfc 4287. A Category Type"@en.
+    
+   awol:Content     a owl:Class;
+         rdfs:label "Content Class"@en;
+         rdfs:comment "see §4.1.3 in rfc 4287 One way to think of this is as a class that represents what one can get from an HTTP connection. It has a body, and a number of headers, info such as mime-type, content-lenght, etc... ."@en;
+         rdfs:subClassOf webarch:Representation.
+    
+   awol:Version   a owl:Class;
+		 rdfs:label "Version Class"@en;
+         rdfs:comment "Metadata about the state of  a resource with given awol:id at an :updated time."@en;
+         rdfs:subClassOf [
+                a owl:Restriction; 
+                owl:cardinality 1;
+                owl:onProperty awol:id ],
+                   [
+                a owl:Restriction; 
+                owl:cardinality 1;
+                owl:onProperty awol:updated ] .
+
+    awol:Entry     a owl:Class;
+		 rdfs:label "Entry Class"@en;
+         rdfs:comment "see §4.1.2 of the rfc 4287 spec"@en;
+         rdfs:subClassOf awol:Version .
+
+    awol:Feed  a owl:Class;
+		 rdfs:label "Feed Class"@en;
+         rdfs:comment  "Container for feed metadata."@en;
+         rdfs:subClassOf awol:Version .
+
+    awol:FeedOrEntry a owl:Class;
+         rdfs:label "FeedOrEntry Class"@en;
+         rdfs:comment "Union of the Feed and Entry class. Simplifies writing the ontology."@en; 
+         owl:unionOf ( awol:Entry :Feed );
+         rdfs:subClassOf  [ a owl:Restriction; 
+                owl:cardinality 1;
+                owl:onProperty awol:title ];
+		 skos:editorialNote "This class should probably be anonymous. It is really only used to make it easier to write the ontology, as it is helps regroup all the relations that are in common between a awol:Feed and an :Entry." .
+
+  awol:Generator a owl:Class;
+        awol:retosNote "is this an instance of the piece of software or the program itself? which is the agent"@en;
+        rdfs:label   "Generator of feed"@en;
+        rdfs:comment "see §4.2.4 of rfc 4287 spec. Generator for the Feed. It has many properties in common with awol:Person"@en;
+        rdfs:subClassOf foaf:Agent .
+
+  awol:Link a owl:Class;
+        rdfs:label  "Link Class"@en;
+        rdfs:subClassOf rdf:Statement;
+        rdfs:comment "see §4.2.7 of rfc 4287 spec. Note that the href, hreflang and lengtlength attributes of rfc 4287 have been moved to the content class and a content relation from the Link to a Content class has been made. The href is translated onto the awol:src relation of the Content class. A link is a reified relation between an entry an a content, for the purpose of adding some metadata such as a title. If it is a reified statement, it is a special type of such a statement, one that implies always the reified statement itself (see N3 rule)"@en .
+    
+  awol:Person a owl:Class;
+        rdfs:label   "Person Class"@en;
+        rdfs:comment "see §3.2 of rfc 4287 spec."@en;
+        rdfs:subClassOf foaf:Agent, [
+        a owl:Restriction; 
+        owl:cardinality 1;
+        owl:onProperty awol:email ] .
+    
+  awol:RelationType a owl:Class;
+        rdfs:label   "Relation Type Class"@en;
+        rdfs:subClassOf owl:ObjectProperty;
+        rdfs:comment "see §4.2.7.2 of rfc 4287. Relation types are registered, or can be created as described in rfc 4287. They are special types of properties that relate awol:Versions to :Contents."@en .
+
+
+# extra datatypes
+
+  awol:XML a owl:Class;
+        rdfs:label   "XML content class";
+        rdfs:comment "see §4.1.3.3 of rfc 4287. The datatype of xml content"@en ;
+        rdfs:subClassOf awol:Content .
+  
+  awol:xml a owl:DatatypeProperty,
+        owl:InverseFunctionalProperty;
+        rdfs:subPropertyOf awol:body;
+        rdfs:label "xml type relation";
+        rdfs:domain awol:XML;
+        rdfs:range rdf:XMLLiteral;
+        rdfs:comment "see §4.1.3.1 of rfc 4287. Relates an awol:XML object to its content."@en .
+
+  awol:TextContent a owl:Class;
+        rdfs:label   "All Text Content Class"@en;
+        rdfs:comment "see §3.1 of rfc 4287. The text constructs."@en;
+        rdfs:subClassOf awol:Content ;
+        skos:editorialNote "Should awol:TextContent really be a sublcass of :Content ? If it is then all the properties that apply to text will also apply to :Content. If we want a :Content to be able to take properties such as :etag, this does not seem quite relevant to anything that is related to what should be the object of :title, :subtitle or :summary. Neither does :src really seem to be a relation that really makes sense there" .
+
+  awol:PlainText a owl:Class;
+        rdfs:label   "Plain text content class";
+        rdfs:comment "see §3.1.1.1 of rfc 4287. The datatype of simple text elements. Essentially this is the class of all plain text literals."@en ;
+        rdfs:subClassOf awol:TextContent .
+
+ awol:HTML a owl:Class;
+    rdfs:label "Html content class";
+		rdfs:comment "see §3.1.1.2 of rfc 4287. The class of html strings"@en ;
+		rdfs:subClassOf awol:TextContent .
+ 
+    awol:XHTML a owl:Class;
+    rdfs:label "Xhtml content class";
+		rdfs:comment "see §3.1.1.3 of rfc 4287. The datatype of xhtml strings"@en ;
+		rdfs:subClassOf awol:TextContent .
+
+ awol:text a owl:DatatypeProperty, 
+            owl:InverseFunctionalProperty;
+        rdfs:subPropertyOf awol:body;
+        rdfs:label "text type";
+        rdfs:domain awol:PlainText;
+        rdfs:range xsd:string;
+		rdfs:comment "see §3.1.1.1 of rfc 4287. The datatype of xhtml text elements"@en .
+
+ awol:html a owl:DatatypeProperty, 
+        owl:InverseFunctionalProperty;
+        rdfs:subPropertyOf awol:body;
+        rdfs:label "html value";
+        rdfs:domain awol:HTML;
+        rdfs:range xsd:string;
+		rdfs:comment "see §3.1.1.2 of rfc 4287. The datatype of html text elements. It is considered to be a relation to the text."@en .
+ 
+ awol:xhtml a owl:DatatypeProperty, 
+        owl:InverseFunctionalProperty;
+        rdfs:subPropertyOf awol:body;
+        rdfs:label "xhtml type";
+        rdfs:domain awol:XHTML;
+        rdfs:range xsd:string;
+		rdfs:comment "see §3.1.1.3 of rfc 4287. The datatype of xhtml text elements."@en ;
+		skos:editorialNote "Note that there is a tricky question concerning the xml div element. The xml:lang and xml:base elements are not in fact part of xhtml and it has been argued on the atom mailing list (28 June 2006) that the div is *not* part of the xhtml. We could have this be a special literal with the div, or we could remove the div and push the xml:lang and xml:base down (this would work only if there is one element beneath I suppose) or we would have to use the awol:lang and :base relations on the :Content object. "@en .
+#
+# Properties
+#
+ 
+
+# Properties of a Version
+
+    awol:id   a owl:FunctionalProperty,
+        owl:DatatypeProperty;
+        rdfs:label   "id"@en;
+        rdfs:comment "See §4.2.6 rfc 4287 spec. All Versions with the same id can be considered to be versions of the resource identified by the id. The id mentions the resource of which it is a representation. "@en;
+        rdfs:domain   awol:Version;
+        rdfs:range    xsd:anyURI .
+
+    awol:updated     a  owl:DatatypeProperty,
+        owl:FunctionalProperty;
+        rdfs:label   "updated"@en;
+        rdfs:comment "See §4.2.15 of rfc 4287 spec. Indicates the most recent instant in time when a resource with the given id was modified in a way the publisher considers significant. Therefore, not all modifications necessarily result in a changed atom:updated value."@en;
+        rdfs:domain   awol:Version;
+        rdfs:range    xsd:dateTime .
+
+# I no longer am sure enough that this is true. If we want to add a awol:modified
+# relation on a awol:Version, then this will certainly not work.
+# If we want to place an etag on the content then this will certainly be broken
+# by this. 
+# 
+#    [] cifp:productProperty ( awol:updated :id );
+#        a owl:InverseFunctionalProperty;
+#        rdfs:comment "see §4.1.1 of rfc 4287. There should be only one awol:Version with the same updated time stamp and id. Any two others are considered to be equivalent."@en.
+
+
+
+
+# Properties that are the same across awol:Feed and :Entry,
+
+   awol:author   a owl:ObjectProperty;
+        rdfs:label "author";
+        rdfs:comment "See §4.2.1 rfc 4287 spec."@en; 
+        rdfs:domain awol:FeedOrEntry;
+        rdfs:range awol:Person .
+   
+   awol:category     a owl:ObjectProperty;
+        rdfs:label "category";
+        rdfs:comment "See §4.2.2. A category with which the conainer is associated."@en;
+        rdfs:domain awol:FeedOrEntry;
+        rdfs:range awol:Category .
+
+   awol:contributor   a owl:ObjectProperty;
+        rdfs:label   "contributor"@en;
+        rdfs:comment "See §4.2.3 of rfc 4287 spec. Someone who contributed to the Version."@en; 
+        rdfs:domain   awol:FeedOrEntry;
+        rdfs:range    awol:Person .
+
+   awol:rights   a owl:FunctionalProperty,  
+                 owl:ObjectProperty;
+        rdfs:label   "rights"@en;
+        rdfs:comment "See §4.2.10 of rfc 4287 spec. Rights held over a Version."@en; 
+        rdfs:domain   awol:FeedOrEntry;
+        rdfs:range    awol:TextContent .
+
+   awol:link     a owl:ObjectProperty;
+        rdfs:label "link"@en;
+        rdfs:comment "See §4.2.7 of rfc 4287 spec. A link associated with the container. If the link is unreified, we have a relation from the container to some resource"@en; 
+        rdfs:subPropertyOf [owl:inverseOf rdf:subject];
+        rdfs:domain  awol:FeedOrEntry;
+        rdfs:range   awol:Link .
+
+   awol:title     a owl:ObjectProperty,
+                  owl:FunctionalProperty;
+        rdfs:label "title"@en;
+        rdfs:comment "See §4.2.14. Title of a container"@en;
+        skos:editorialNote "Reto argues that a Title should have any content attached to it. One should for example allow picture for people who can't read or audio titles for people who cannot write. This would of course make the semantics be a lot more lax that the rfc 4287 syntax allows. "@en;
+        rdfs:domain [ owl:unionOf ( awol:FeedOrEntry :Link ) ];
+        rdfs:range awol:TextContent .
+
+         
+
+# Properties specific to awol:Entry
+
+   awol:content     a owl:FunctionalProperty,
+        owl:ObjectProperty;
+        rdfs:label "content"@en;
+        rdfs:comment "See §4.1.3 of rfc 4287 spec. The content of an Entry, a Link or any of the relation types that are the object of awol:rel properties"@en;
+        rdfs:subPropertyOf webarch:representation;
+        rdfs:domain awol:Entry;
+        rdfs:range awol:Content.
+
+   awol:published     a owl:DatatypeProperty,
+        owl:FunctionalProperty;
+        rdfs:label "publication date"@en;
+        rdfs:comment "See §4.2.9 of rfc 4287 spec. A date associated with an event early in the lifecyle of the subject."@en;
+        rdfs:domain awol:Entry;
+        rdfs:range xsd:dateTime .
+   
+   awol:source     a owl:ObjectProperty;
+        rdfs:label "source feed"@en;
+        rdfs:comment "See §4.2.11 of rfc 4287 spec. The source feed where the entry was found"@en;
+		    owl:inverseOf awol:entry;
+		    rdfs:domain awol:Entry;
+        rdfs:range awol:Feed ;
+	      awol:eliasNote "This relation is not strictly necessary."@en;
+		    skos:editorialNote "This is indeed not really needed. But it is useful for explaining the relation between the source element in rfc 4287 and the awol:entry relation. It has educational value." .
+
+   awol:summary     a owl:ObjectProperty, 
+        owl:FunctionalProperty;
+        rdfs:label "summary"@en;
+        rdfs:comment "See §4.2.13 of rfc 4287 spec. A summary of the content of the Entry"@en;
+        rdfs:domain awol:Entry;
+        rdfs:range awol:TextContent .
+
+# Properties specific to awol:Feed
+
+   awol:generator     a owl:FunctionalProperty,
+        owl:ObjectProperty;
+        rdfs:label "generator"@en;
+        rdfs:comment "see §4.2.4 of rfc 4287. The generator of the object"@en;
+        skos:editorialNote "The domain should really just be awol:Version. I don't see why Entries can't have an generator too (especially as atom:entry can be a top level content)."@en;
+        rdfs:domain awol:Feed;
+        rdfs:range  awol:Generator .
+
+    awol:icon a owl:ObjectProperty;
+        rdfs:label   "icon"@en;
+        rdfs:comment "see 4.2.5 of rfc 4287. An icon associated with the object"@en;
+        skos:editorialNote "The domain should really just be awol:Version. I don't see why Entries can't have an icon."@en;
+        rdfs:domain awol:Feed;
+        rdfs:range foaf:Image.
+    
+    awol:logo a owl:ObjectProperty, owl:FunctionalProperty; 
+        rdfs:label   "logo"@en;
+        rdfs:comment "see §4.2.8 of rfc 4287. An icon associated with the object"@en;
+        skos:editorialNote "The domain should really just be awol:Version. I don't see why Entries can't have a logo too."@en;
+        rdfs:domain awol:Feed;
+        rdfs:range foaf:Image.
+   
+   awol:subtitle    a owl:ObjectProperty,
+        owl:FunctionalProperty;
+        rdfs:label  "subtitle"@en;
+        rdfs:comment "see §4.2.12 of rfc 4287. Subtitle of the feed."@en;
+		rdfs:subPropertyOf awol:content;
+        rdfs:domain awol:Feed;
+        rdfs:range awol:TextContent .
+
+   awol:contains  a owl:ObjectProperty;
+        rdfs:label   "contains relation"@en;
+        rdfs:comment "The feed contains the given Entry. See §4.1.1 of rfc4287. This makes no statement about whether that Entry has the awol:Feed as its source."@en;
+        rdfs:domain  awol:Feed;
+        rdfs:range   awol:Entry.
+
+   awol:aggregates a owl:ObjectProperty;
+        rdfs:label  "aggregates"@en;
+        rdfs:comment "The feed aggregates this given Entry.  See §4.1.1 of rfc4287. This means that the entry does not have the feed as its source. The entry was taken from a different feed."@en;
+        rdfs:domain     awol:Feed;
+        rdfs:range      awol:Entry;
+        rdfs:subPropertyOf awol:content;
+        skos:editorialNote "This relation is not visible in the rfc4287 xml. It is not clear that it is needed either, though it can help simplify queries. See also N3 rule that defines this precisely " .    
+    
+   awol:entry     a owl:ObjectProperty;
+        rdfs:label   "entry relation"@en;
+        rdfs:comment "The feed contains the given Entry and that Entry has the feed as its source. See §4.1.1 of rfc 4287. This relation is a little bit more specialised than the rfc 4287 entry element. It relates only awol:Feed objects to :Entry objects where the :Feed is a :source of the :Entry. See also the :source and :contains relations. "@en;
+        rdfs:subPropertyOf awol:contains; 
+        rdfs:subPropertyOf [ owl:inverseOf awol:source ]; 
+        rdfs:domain   awol:Feed;
+        rdfs:range    awol:Entry .
+ 
+# Properties specific to awol:Person
+
+    awol:email a owl:ObjectProperty;
+        rdfs:label   "email address"@en;
+        rdfs:comment "see §3.2.3 of rfc 4287. A mailbox of the Person"@en;
+        rdfs:domain   awol:FeedOrEntry;
+        rdfs:range    awol:Person .
+
+# properties specific to Generator
+
+    awol:generatorVersion a owl:DatatypeProperty ; 
+        rdfs:label   "generatorVersion"@en;
+        rdfs:comment "see §4.2.4 of rfc 4287. Indicates the version of the Generator"@en;
+        rdfs:domain   awol:Generator;
+        rdfs:range    xsd:string .
+
+# Properties specific to Person and Generator
+
+    awol:uri a owl:DatatypeProperty ; 
+        rdfs:label "a uri"@en;
+        rdfs:comment "see §4.2.4 of rfc 4287. A uri associated the Generator"@en;
+        rdfs:comment "see §3.2.2 of rfc 4287. A uri associated the Person"@en;
+        skos:editorialNote "the uri with subject awol:Agent and :Generator are really the same relation"@en;
+        rdfs:domain [ owl:unionOf ( awol:Person :Generator ) ];
+        rdfs:range  xsd:anyURI . 
+
+    awol:name a owl:DatatypeProperty;
+        rdfs:label "name"@en;
+        rdfs:comment "see §3.2.1 of rfc 4287. A human readable name for the Person."@en;
+        rdfs:comment "see §4.2.4 of rfc 4287. A name for the Generator. "@en;
+        rdfs:domain [ owl:unionOf ( awol:Person :Generator ) ];
+        rdfs:subPropertyOf foaf:name.
+    
+
+
+# Properties on the awol:Link
+# note: the rfc 4287 link attributes such as hreflang, length and href are in fact properties of the content that the link points to
+
+    awol:subject a owl:ObjectProperty;
+        rdfs:label   "the object of the link"@en;
+        rdfs:comment "the inverse of the awol:link relation, not specified in rfc 4287, but added here for convenience"@en;
+        rdfs:subPropertyOf rdf:subject;
+        owl:inverseOf awol:link .
+
+    awol:rel a owl:ObjectProperty;
+        rdfs:label   "relation type"@en;
+        rdfs:comment "see §4.2.7.2 of rfc 4287. The relationship type. The relationship type is a property that relates a awol:Version to a :Content "@en;
+        rdfs:subPropertyOf rdf:predicate;
+        rdfs:domain   awol:Link;
+        rdfs:range    awol:RelationType .
+
+    awol:to a owl:ObjectProperty;
+        rdfs:label   "to"@en;
+        rdfs:comment "the object of a link. We interpret here a Link to be a re-ified relation from a awol:Version to a :Content object. The relation is re-ified in order to add a :title relation to the link. This can probably usually be safely ignored";
+	      rdfs:subPropertyOf rdf:object .
+
+   
+# Some of the relation types
+
+    iana:alternate  a awol:RelationType, owl:ObjectProperty ;
+        rdfs:label  "alternate relation"@en;
+        rdfs:comment "see §4.2.7.2.1 of rfc 4287. The object points to an alternate version of the subject"@en;
+        rdfs:domain  awol:Version .
+
+    iana:related     a awol:RelationType ;
+        rdfs:label  "related"@en;
+        rdfs:comment "see §4.2.7.2.2 of rfc 4287. The object points to a related version of the subject. So if the subject is a Entry the object might be a resource with an html representation of that entry."@en;
+        rdfs:domain  awol:Version .
+
+    iana:self        a awol:RelationType ;
+        rdfs:label   "self relation"@en;
+        rdfs:comment "see §4.2.7.2.3 of rfc 4287. The object is equivalent to the subject."@en;
+        awol:retosNote   "is this owl:sameAs? or some other well known identity relation?"@en;
+        rdfs:domain  awol:Version .
+
+    iana:enclosure   a awol:RelationType ;
+        rdfs:label  "enclosure relation"@en;
+        rdfs:comment "see §4.2.7.2.4 of rfc 4287. The object is a related resource that is potentially large in size and requires special handling."@en;
+        rdfs:subPropertyOf iana:alternate .
+
+    iana:via             a awol:RelationType ;
+        rdfs:label  "via relation"@en;
+        rdfs:comment "see §4.2.7.2.5 of rfc 4287. The object provided a source of the information found in the subject."@en;
+        rdfs:domain  awol:Version .
+    
+# Properties of web resources, ie awol:Content 
+# these, especially the type property, point to a very strong similarity 
+# between a representation and an atom:content
+
+  awol:type a owl:DatatypeProperty,
+        owl:FunctionalProperty;
+        rdfs:label "mime type"@en;
+        rdfs:comment "see §4.2.7.3 of rfc 4287. The mime type of the representation."@en;
+#       rdfs:subPropertyOf  dc:format;
+        rdfs:domain  awol:Content;
+        rdfs:range xsd:string .
+ 
+  awol:lang a owl:DatatypeProperty,
+        owl:FunctionalProperty;
+        rdfs:label "language"@en;
+        rdfs:comment "see §4.2.7.4 of rfc 4287. The language of the representation."@en;
+        rdfs:domain awol:Content;
+        rdfs:range xsd:language .
+ 
+  awol:length a owl:DatatypeProperty,
+        owl:FunctionalProperty;
+        rdfs:label "length in bytes"@en;
+        rdfs:comment "see §4.2.7.6 of rfc 4287. The length in bytes of the representation."@en;
+        rdfs:domain awol:Content;
+        rdfs:range xsd:int .
+
+  awol:body a owl:DatatypeProperty,
+        owl:FunctionalProperty;
+        rdfs:label "body relation";
+        rdfs:comment "the body of the content."@en;
+        rdfs:domain awol:Content;
+        rdfs:range rdfs:Literal .
+
+  awol:src a owl:ObjectProperty;
+        rdfs:label "source"@en;
+        rdfs:comment "a source of the representation"@en;
+        owl:equivalentProperty webarch:representationOf;
+        rdfs:domain awol:Content;
+        rdfs:range  webarch:InformationResource .
+
+
+# Properties on Category
+    
+    awol:term     a owl:FunctionalProperty, 
+                owl:DatatypeProperty;
+        rdfs:label   "term"@en;
+        rdfs:comment "see §4.2.2.1 of rfc 4287. Identifies the category"@en;
+        skos:editorialNote "should specify that there is exactly one term"@en;
+        rdfs:domain awol:Category;
+        rdfs:range xsd:string .
+    
+    awol:scheme  a owl:FunctionalProperty,
+               owl:ObjectProperty;
+        rdfs:label   "catgegorization scheme"@en;
+        rdfs:comment "see §4.2.2.2 of rfc 4287. Identifies a categorization scheme."@en; 
+        rdfs:domain awol:Category;
+        rdfs:range webarch:InformationResource.
+
+    awol:label   a owl:FunctionalProperty, 
+               owl:DatatypeProperty;
+        rdfs:label    "label"@en;
+        rdfs:comment "see §4.2.2.3 of rfc 4287. A Human readable label for display."@en;
+        skos:editorialNote "Should this be functional? Given the language sensitivity of the label"@en;
+        rdfs:domain awol:Category;
+        rdfs:range xsd:string .
+
+    [] cifp:productProperty ( awol:term :scheme );
+         a owl:InverseFunctionalProperty;
+         rdfs:comment "A term and a scheme identify a Category"@en ;
+	 skos:editorialNote "The label is language dependent and seems less important"@en .
+     
+  
+# Properties on the Id Constructs       
+#
+# No longer valid as we have removed the awol:Id class   
+#
+#    awol:version  a owl:ObjectProperty,
+#              owl:InverseFunctionalProperty;
+#         rdfs:label    "version of an id resource"@en;
+#         rdfs:comment  "the inverse of the id relation. The state of an id is always a awol:Version"@en;
+#         owl:inverseOf   awol:id;
+#         rdfs:domain  awol:Id;
+#         rdfs:range  awol:Version.
+#
+#    awol:update     a owl:ObjectProperty;
+#         rdfs:label   "An entry of a Feed"@en;
+#         rdfs:comment "The feed has published the given entry"@en;
+#         rdfs:domain  awol:FeedId;
+#         rdfs:range   awol:Entry.
+      
+
+#
+# Rules
+#
+
+
+# Move from a document structure towards less of a document structure
+
+ { ?feed a awol:Feed;
+          awol:id ?feedId;
+          awol:entry ?entry . } => { ?feedId :update ?entry } .
+
+
+# Link
+    { ?link awol:subject ?version;  
+           awol:rel ?rel;  
+           awol:to ?content . } => {  ?version ?rel ?content . } .  
+
+# awol:aggregates
+
+  { ?f awol:contains ?e .
+    ?e awol:source ?f2 . 
+    ?f owl:differentFrom ?f2 . }  log:means { ?f awol:aggregates ?e . } .  
+
+# A link should rather point to a content object.
+    
+# Content
+# The rules below means we are in OWL Full. It may also have some other consequences on the ontology  that needs to be worked out. 
+#http://chatlogs.planetrdf.com/swig/2005-09-28.html#T10-23-21
+
+#I am keeping these here as a reminder of what I was thinking of doing.
+
+#    { ?content a awol:Content;
+#                awol:type "text/plain";
+#                awol:string ?s . } => { ?content = ?s . } .
+#cwm.py does not like the rules below
+#   { ?content a awol:Content;
+#               awol:type "text/plain";
+#               awol:lang ?l;
+#               awol:string ?s . } => { ?content = ?s@?l . } . 
+
+#   { ?content a awol:Content;
+#               awol:type "application/xml";
+#               awol:string ?s . } => { ?content = ?s@rdfs:XMLLiteral . } . 
+
+# any others?
+
+
+#ENDS

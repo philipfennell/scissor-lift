@@ -1,0 +1,34 @@
+<file:///atom/example-01.xml> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://bblfish.net/work/atom-owl/2006-06-06/#Feed>.
+_:bnode585208896 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://bblfish.net/work/atom-owl/2006-06-06/#Content>.
+_:bnode585208896 <http://bblfish.net/work/atom-owl/2006-06-06/#type> "text/plain".
+_:bnode585208896 <http://bblfish.net/work/atom-owl/2006-06-06/#body> "Example Feed".
+<file:///atom/example-01.xml> <http://bblfish.net/work/atom-owl/2006-06-06/#title> _:bnode585208896.
+_:bnode1103928960 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://bblfish.net/work/atom-owl/2006-06-06/#Link>.
+_:bnode1103928960 <http://bblfish.net/work/atom-owl/2006-06-06/#rel> <http://www.iana.org/assignments/relation/alternate>.
+_:bnode1622649024 <http://bblfish.net/work/atom-owl/2006-06-06/#src> <http://example.org/>.
+_:bnode1103928960 <http://bblfish.net/work/atom-owl/2006-06-06/#to> _:bnode1622649024.
+<file:///atom/example-01.xml> <http://bblfish.net/work/atom-owl/2006-06-06/#link> _:bnode1103928960.
+<file:///atom/example-01.xml> <http://bblfish.net/work/atom-owl/2006-06-06/#updated> "2003-12-13T18:30:02Z"^^<http://www.w3.org/2001/XMLSchema#dateTime>.
+_:bnode1116158080 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://bblfish.net/work/atom-owl/2006-06-06/#Person>.
+_:bnode1116158080 <http://www.w3.org/2002/07/owl#sameAs> _:author1.
+_:bnode1116158080 <http://bblfish.net/work/atom-owl/2006-06-06/#name> "John Doe".
+<file:///atom/example-01.xml> <http://bblfish.net/work/atom-owl/2006-06-06/#author> _:bnode1116158080.
+<file:///atom/example-01.xml> <http://bblfish.net/work/atom-owl/2006-06-06/#id> "urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6"^^<http://www.w3.org/2001/XMLSchema#anyURI>.
+_:bnode78717952 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://bblfish.net/work/atom-owl/2006-06-06/#Entry>.
+_:bnode78717952 <http://bblfish.net/work/atom-owl/2006-06-06/#author> _:author1.
+_:bnode440002112 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://bblfish.net/work/atom-owl/2006-06-06/#Content>.
+_:bnode440002112 <http://bblfish.net/work/atom-owl/2006-06-06/#type> "text/plain".
+_:bnode440002112 <http://bblfish.net/work/atom-owl/2006-06-06/#body> "Atom-Powered Robots Run Amok".
+_:bnode78717952 <http://bblfish.net/work/atom-owl/2006-06-06/#title> _:bnode440002112.
+_:bnode958722176 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://bblfish.net/work/atom-owl/2006-06-06/#Link>.
+_:bnode958722176 <http://bblfish.net/work/atom-owl/2006-06-06/#rel> <http://www.iana.org/assignments/relation/alternate>.
+_:bnode1477442240 <http://bblfish.net/work/atom-owl/2006-06-06/#src> <http://example.org/2003/12/13/atom03>.
+_:bnode958722176 <http://bblfish.net/work/atom-owl/2006-06-06/#to> _:bnode1477442240.
+_:bnode78717952 <http://bblfish.net/work/atom-owl/2006-06-06/#link> _:bnode958722176.
+_:bnode78717952 <http://bblfish.net/work/atom-owl/2006-06-06/#id> "urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a"^^<http://www.w3.org/2001/XMLSchema#anyURI>.
+_:bnode78717952 <http://bblfish.net/work/atom-owl/2006-06-06/#updated> "2003-12-13T18:30:02Z"^^<http://www.w3.org/2001/XMLSchema#dateTime>.
+_:bnode1261364864 <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://bblfish.net/work/atom-owl/2006-06-06/#Content>.
+_:bnode1261364864 <http://bblfish.net/work/atom-owl/2006-06-06/#type> "text/plain".
+_:bnode1261364864 <http://bblfish.net/work/atom-owl/2006-06-06/#body> "Some text.".
+_:bnode78717952 <http://bblfish.net/work/atom-owl/2006-06-06/#summary> _:bnode1261364864.
+<file:///atom/example-01.xml> <http://bblfish.net/work/atom-owl/2006-06-06/#entry> _:bnode78717952.

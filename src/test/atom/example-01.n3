@@ -1,0 +1,38 @@
+@base <file:///atom/example-01.xml> .
+@prefix : <http://bblfish.net/work/atom-owl/2006-06-06/#> .
+@prefix iana: <http://www.iana.org/assignments/relation/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+<> a :Feed;
+ :title [ a :Content; :type "text/plain";
+         :body "Example Feed";
+         ];
+ :link [ a :Link;
+           :rel iana:alternate ;
+           :to [ :src <http://example.org/>;]
+           ];
+ :updated "2003-12-13T18:30:02Z"^^xsd:dateTime;
+ :author [ a :Person;
+           owl:sameAs _:author1;
+            :name "John Doe";
+          ];
+ :id "urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6"^^xsd:anyURI;
+ :entry [  a :Entry;
+           :author _:author1;
+           :title [ a :Content; :type "text/plain";
+                   :body "Atom-Powered Robots Run Amok";
+                   ];
+           :link [ a :Link;
+                   :rel iana:alternate ;
+                   :to [ :src <http://example.org/2003/12/13/atom03>;]
+                   ];
+           :id "urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a"^^xsd:anyURI;
+           :updated "2003-12-13T18:30:02Z"^^xsd:dateTime;
+           :summary [ a :Content; :type "text/plain";
+                   :body "Some text.";
+                   ];
+ ];
+ .

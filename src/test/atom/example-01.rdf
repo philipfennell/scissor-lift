@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<rdf:RDF 
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema#" 
+    xmlns:owl="http://www.w3.org/2002/07/owl#" 
+    xmlns:iana="http://www.iana.org/assignments/relation/" 
+    xmlns:awol="http://bblfish.net/work/atom-owl/2006-06-06/#">
+  <awol:Feed>
+    <awol:title>
+      <awol:Content>
+        <awol:type>text/plain</awol:type>
+        <awol:body>Example Feed</awol:body>
+      </awol:Content>
+    </awol:title>
+    <awol:link>
+      <awol:Link>
+        <awol:rel rdf:resource="http://www.iana.org/assignments/relation/alternate"/>
+        <awol:to>
+          <rdf:Description>
+            <awol:src rdf:resource="http://example.org/"/>
+          </rdf:Description>
+        </awol:to>
+      </awol:Link>
+    </awol:link>
+    <awol:updated rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2003-12-13T18:30:02Z</awol:updated>
+    <awol:author>
+      <awol:Person>
+        <owl:sameAs>
+          <rdf:Description rdf:nodeID="author1"/>
+        </owl:sameAs>
+        <awol:name>John Doe</awol:name>
+      </awol:Person>
+    </awol:author>
+    <awol:id rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">urn:uuid:60a76c80-d399-11d9-b93C-0003939e0af6</awol:id>
+    <awol:entry>
+      <awol:Entry>
+        <awol:author rdf:nodeID="author1"/>
+        <awol:title>
+          <awol:Content>
+            <awol:type>text/plain</awol:type>
+            <awol:body>Atom-Powered Robots Run Amok</awol:body>
+          </awol:Content>
+        </awol:title>
+        <awol:link>
+          <awol:Link>
+            <awol:rel rdf:resource="http://www.iana.org/assignments/relation/alternate"/>
+            <awol:to>
+              <rdf:Description>
+                <awol:src rdf:resource="http://example.org/2003/12/13/atom03"/>
+              </rdf:Description>
+            </awol:to>
+          </awol:Link>
+        </awol:link>
+        <awol:id rdf:datatype="http://www.w3.org/2001/XMLSchema#anyURI">urn:uuid:1225c695-cfb8-4ebb-aaaa-80da344efa6a</awol:id>
+        <awol:updated rdf:datatype="http://www.w3.org/2001/XMLSchema#dateTime">2003-12-13T18:30:02Z</awol:updated>
+        <awol:summary>
+          <awol:Content>
+            <awol:type>text/plain</awol:type>
+            <awol:body>Some text.</awol:body>
+          </awol:Content>
+        </awol:summary>
+      </awol:Entry>
+    </awol:entry>
+  </awol:Feed>
+</rdf:RDF>

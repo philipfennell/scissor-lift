@@ -1,0 +1,76 @@
+@prefix : <http://bblfish.net/work/atom-owl/2006-06-06/#> .
+@prefix iana: <http://www.iana.org/assignments/relation/>.
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+
+[] a :Feed;
+ :title [ a :Content; :type "text/plain";
+         :body "dive into mark";
+         ];
+ :subtitle [ a :Content; :type "text/html";
+         :body """
+    A <em>lot</em> of effort
+    went into making this effortless
+  """;
+         ];
+ :updated "2005-07-31T12:29:29Z"^^xsd:dateTime;
+ :id "tag:example.org,2003:3"^^xsd:anyURI;
+ :link [ a :Link;
+           :rel iana:alternate;
+           :to [ :src <http://example.org/>;
+                      :type "text/html";]
+           ];
+ :link [ a :Link;
+           :rel iana:self;
+           :to [ :src <http://example.org/feed.atom>;
+                      :type "application/atom+xml";]
+           ];
+ :rights [ a :Content; :type "text/plain";
+         :body "Copyright (c) 2003, Mark Pilgrim";
+         ];
+ :generator [ a :Generator;
+               :uri <http://www.example.com/>;
+               :generatorVersion "1.0";
+               :name """
+    Example Toolkit
+  """];
+ :entry [  a :Entry;
+           :title [ a :Content; :type "text/plain";
+                   :body "Atom draft-07 snapshot";
+                   ];
+           :link [ a :Link;
+                   :rel iana:alternate;
+                   :to [ :src <http://example.org/2005/04/02/atom>;
+                              :type "text/html";]
+                   ];
+           :link [ a :Link;
+                   :rel iana:enclosure;
+                   :to [ :src <http://example.org/audio/ph34r_my_podcast.mp3>;
+                              :type "audio/mpeg";
+                              :length 1337;]
+                   ];
+           :id "tag:example.org,2003:3.2397"^^xsd:anyURI;
+           :updated "2005-07-31T12:29:29Z"^^xsd:dateTime;
+           :published "2003-12-13T08:29:29-04:00"^^xsd:dateTime;
+           :author [ a :Person;
+                     :name "Mark Pilgrim";
+                     :uri <http://example.org/>;
+                     :email <mailto:f8dy@example.com> ;
+                   ];
+           :contributor [ a :Person;
+                          :name "Sam Ruby";
+                        ];
+           :contributor [ a :Person;
+                          :name "Joe Gregorio";
+                        ];
+           :content [ a :Content; :type "application/xhtml+xml"; :lang "en";
+                      :base <http://diveintomark.org/>;
+                     :body """<div xmlns=\"http://www.w3.org/1999/xhtml\">
+        <p><i>[Update: The Atom draft is finished.]</i></p>
+
+      </div>""";
+                     ];
+ ];
+ .
