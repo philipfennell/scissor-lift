@@ -43,6 +43,9 @@
   <iso:pattern>
     <iso:title>Required elements for Atom Entry</iso:title>
     <iso:rule context="/atom:feed/atom:entry">
+      
+      <iso:let name="entryURI" value="concat($feedURI, '/entries/', substring-after(atom:id, 'urn:uuid:'))"/>
+      
       <iso:report test=".">
         <sl:uri template="http://example.org/feeds/{feedID}/entries/{entryID}">
           <sl:param name="feedID" select="substring-after(/atom:feed/atom:id, 'urn:uuid:')" type="xs:string"/>
@@ -52,12 +55,29 @@
         <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#Entry</sl:uri>
       </iso:report>
       <iso:report test="atom:title">
-        <sl:uri template="http://example.org/feeds/{feedID}/entries/{entryID}">
-          <sl:param name="feedID" select="substring-after(/atom:feed/atom:id, 'urn:uuid:')" type="xs:string"/>
-          <sl:param name="entryID" select="substring-after(atom:id, 'urn:uuid:')" type="xs:string"/>
-        </sl:uri>
+        <sl:uri select="$entryURI"/>
         <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#title</sl:uri>
         <sl:plainLiteral xml:lang="en-GB" select="atom:title"/>
+      </iso:report>
+      <iso:report test="atom:id">
+        <sl:uri select="$entryURI"/>
+        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#id</sl:uri>
+        <sl:typedLiteral datatype="http://www.w3.org/2001/XMLSchema#anyURI" select="atom:id"/>
+      </iso:report>
+      <iso:report test="atom:updated" >
+        <sl:uri select="$entryURI"/>
+        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#updated</sl:uri>
+        <sl:typedLiteral datatype="http://www.w3.org/2001/XMLSchema#dateTime" select="atom:updated"/>
+      </iso:report>
+      <iso:report test="atom:link" >
+        <sl:uri select="generate-id()"/>
+        <sl:uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</sl:uri>
+        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#Link</sl:uri>
+      </iso:report>
+      <iso:report test="atom:link" >
+        <sl:uri select="generate-id()"/>
+        <sl:uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</sl:uri>
+        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#Link</sl:uri>
       </iso:report>
     </iso:rule>
   </iso:pattern>
