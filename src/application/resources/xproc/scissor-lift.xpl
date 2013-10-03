@@ -8,6 +8,10 @@
   
   <p:documentation>Takes a source XML and a scissor-lift mapping, compiles the mapping and applies it to the source document.</p:documentation>
   
+  <p:option name="representation" select="'trix'">
+    <p:documentation>Defines the output graph representation and accepts values of: (ntriples | rdfxml | trix). Default is trix.</p:documentation>
+  </p:option>
+  
   <p:input port="source" primary="true"/>
   <p:input port="mapping"/>
   <p:output port="include">
@@ -76,4 +80,33 @@
       <p:empty/>
     </p:input>
   </p:xslt>
+  
+  <!--<p:choose>
+    <p:documentation>Select an output representation.</p:documentation>
+    <p:when test="$representation eq 'ntriples'">
+      <p:xslt name="n-triples">
+        <p:documentation>Third, compile the Schematron schema into an XSLT script.</p:documentation>
+        <p:input port="stylesheet">
+          <p:document href="xslt/ntriples/trix-to-ntriples.xsl"/>
+        </p:input>
+        <p:input port="parameters">
+          <p:empty/>
+        </p:input>
+      </p:xslt>
+    </p:when>
+    <p:when test="$representation eq 'rdfxml'">
+      <p:xslt name="n-triples">
+        <p:documentation>Third, compile the Schematron schema into an XSLT script.</p:documentation>
+        <p:input port="stylesheet">
+          <p:document href="xslt/rdf-xml/trix-to-rdf-xml.xsl"/>
+        </p:input>
+        <p:input port="parameters">
+          <p:empty/>
+        </p:input>
+      </p:xslt>
+    </p:when>
+    <p:otherwise>
+      <p:identity/>
+    </p:otherwise>
+  </p:choose>-->
 </p:declare-step>
