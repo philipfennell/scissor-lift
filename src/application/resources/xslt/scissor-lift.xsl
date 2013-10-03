@@ -556,6 +556,23 @@
       </xsl:choose>
     </uri>
   </xsl:template>
+  
+  
+  <!-- Overrides skeleton -->
+  <xsl:template match="sl:id" mode="text">
+    <xsl:if test="not(@select | @template)">
+      <xsl:message>
+        <xsl:call-template name="outputLocalizedMessage">
+          <xsl:with-param name="number">34</xsl:with-param>
+        </xsl:call-template>
+      </xsl:message>
+    </xsl:if>
+    <xsl:call-template name="IamEmpty"/>
+    
+    <id>
+      <axsl:value-of select="generate-id({@select})"/>
+    </id>
+  </xsl:template>
 
 
   <!-- Overrides skeleton -->
@@ -620,11 +637,13 @@
   </xsl:template>
   
   
-  <!-- New -->
+  <!-- For each defined parameter, replace its occurrence in the URI template 
+       with the result of its select expression. -->
   <xsl:template name="process-template-params">
     <xsl:param name="uriTemplate" as="xs:string"/>
     <xsl:param name="params" as="element(sl:param)*"/>
     <xsl:variable name="regex" as="xs:string" select="string-join(for $param in $params return concat('(\{', $param/@name, '\})'), '|')"/>
+    <xsl:variable name="templateParamPattern" as="xs:string" select="'\{[a-zA-Z0-9]+\}'"/>
     
     <xsl:analyze-string select="$uriTemplate" regex="{$regex}">
       <xsl:matching-substring>
@@ -633,9 +652,11 @@
       </xsl:matching-substring>
       <xsl:non-matching-substring>
         <xsl:choose>
-          <xsl:when test="matches(., '\{[a-zA-Z0-9]+\}')">
+          <!-- When a non-matching portion of the URI contains a template parameter, this is an error.
+               This means theirs no matching parameter defined in the source. -->
+          <xsl:when test="matches(., $templateParamPattern)">
             <xsl:variable name="match">
-              <xsl:analyze-string select="." regex="\{{[a-zA-Z0-9]+\}}">
+              <xsl:analyze-string select="." regex="{$templateParamPattern}">
                 <xsl:matching-substring>
                   <xsl:value-of select="."/>
                 </xsl:matching-substring>
@@ -643,7 +664,7 @@
               </xsl:analyze-string>
             </xsl:variable>
             
-            <xsl:message terminate="yes">[SCISSOR-LIFT][ERROR] Failed to match URI parameter in URI template with a declared parameter: <xsl:value-of select="$match"/></xsl:message>
+            <xsl:message terminate="yes">[XSLT][SCISSOR-LIFT][ERROR] Failed to match URI parameter in URI template with a declared parameter for: <xsl:value-of select="$match"/></xsl:message>
           </xsl:when>
           <xsl:otherwise>
             <xsl:value-of select="."/>
