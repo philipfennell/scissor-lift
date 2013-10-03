@@ -7,6 +7,35 @@
   
   <iso:let name="feedURI" value="concat('http://example.org/feeds/', substring-after(/atom:feed/atom:id, 'urn:uuid:'))"/>
   
+  <iso:pattern id="x" abstract="true">
+    <iso:title>Abstract Rules</iso:title>
+    
+    <iso:rule id="link" abstract="true">
+      <iso:let name="entryURI" value="concat($feedURI, '/entries/', substring-after(../atom:id, 'urn:uuid:'))"/>
+      
+      <iso:report test="." >
+        <sl:uri select="$entryURI"/>
+        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#link</sl:uri>
+        <sl:id select="."/>
+      </iso:report>
+      <iso:report test="." >
+        <sl:id select="."/>
+        <sl:uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</sl:uri>
+        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#Link</sl:uri>
+      </iso:report>
+      <iso:report test="." >
+        <sl:id select="."/>
+        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#to</sl:uri>
+        <sl:id select="@href"/>
+      </iso:report>
+      <iso:report test="@href" >
+        <sl:id select="@href"/>
+        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#src</sl:uri>
+        <sl:uri select="@href"/>
+      </iso:report>
+    </iso:rule>
+  </iso:pattern>
+  
 	<iso:pattern>
 		<iso:title>Atom Feed Root</iso:title>
 		<iso:rule context="/">
@@ -37,6 +66,9 @@
 		    <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#updated</sl:uri>
 		    <sl:typedLiteral datatype="http://www.w3.org/2001/XMLSchema#dateTime" select="atom:updated"/>
 		  </iso:report>
+		</iso:rule>
+	  <iso:rule context="/atom:feed/atom:link">
+		  <iso:extends rule="link"/>
 		</iso:rule>
 	</iso:pattern>
   
@@ -69,16 +101,9 @@
         <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#updated</sl:uri>
         <sl:typedLiteral datatype="http://www.w3.org/2001/XMLSchema#dateTime" select="atom:updated"/>
       </iso:report>
-      <iso:report test="atom:link" >
-        <sl:uri select="generate-id()"/>
-        <sl:uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</sl:uri>
-        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#Link</sl:uri>
-      </iso:report>
-      <iso:report test="atom:link" >
-        <sl:uri select="generate-id()"/>
-        <sl:uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</sl:uri>
-        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#Link</sl:uri>
-      </iso:report>
+    </iso:rule>
+    <iso:rule context="/atom:feed/atom:entry/atom:link">
+      <iso:extends rule="link"/>
     </iso:rule>
   </iso:pattern>
 </iso:schema>
