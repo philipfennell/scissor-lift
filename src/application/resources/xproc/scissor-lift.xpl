@@ -34,7 +34,7 @@
       <p:pipe port="mapping" step="scissor-lift"/>
     </p:input>
     <p:input port="stylesheet">
-      <p:document href="xslt/iso-schematron-xslt2/iso_dsdl_include.xsl"/>
+      <p:document href="xslt/scissor-lift-include.xsl"/>
     </p:input>
     <p:input port="parameters">
       <p:empty/>
