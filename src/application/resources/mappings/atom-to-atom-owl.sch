@@ -7,10 +7,10 @@
   
   <iso:let name="feedURI" value="concat('http://example.org/feeds/', substring-after(/atom:feed/atom:id, 'urn:uuid:'))"/>
   
-  <iso:pattern id="x" abstract="true">
+  <iso:pattern id="abstract" abstract="true">
     <iso:title>Abstract Rules</iso:title>
     
-    <iso:rule id="link" abstract="true">
+    <iso:rule id="links" abstract="true">
       <iso:let name="entryURI" value="concat($feedURI, '/entries/', substring-after(../atom:id, 'urn:uuid:'))"/>
       
       <iso:report test="." >
@@ -34,6 +34,24 @@
         <sl:uri select="@href"/>
       </iso:report>
     </iso:rule>
+    
+    <iso:rule id="required" abstract="true">
+      <iso:report test="atom:title">
+        <sl:uri select="$feedURI"/>
+        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#title</sl:uri>
+        <sl:plainLiteral xml:lang="en-GB" select="atom:title"/>
+      </iso:report>
+      <iso:report test="atom:id">
+        <sl:uri select="$feedURI"/>
+        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#id</sl:uri>
+        <sl:typedLiteral datatype="http://www.w3.org/2001/XMLSchema#anyURI" select="atom:id"/>
+      </iso:report>
+      <iso:report test="atom:updated">
+        <sl:uri select="$feedURI"/>
+        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#updated</sl:uri>
+        <sl:typedLiteral datatype="http://www.w3.org/2001/XMLSchema#dateTime" select="atom:updated"/>
+      </iso:report>
+    </iso:rule>
   </iso:pattern>
   
 	<iso:pattern>
@@ -45,36 +63,19 @@
 		    <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#Feed</sl:uri>
 		  </iso:report>
 		</iso:rule>
-	</iso:pattern>
-  
-	<iso:pattern>
-		<iso:title>Required elements of an Atom Feed</iso:title>
-		<iso:rule context="/atom:feed">
-		  <iso:assert test="atom:title">This element must be present for the feed to be valid</iso:assert>
-		  <iso:report test="atom:title">
-		    <sl:uri select="$feedURI"/>
-		    <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#title</sl:uri>
-		    <sl:plainLiteral xml:lang="en-GB" select="atom:title"/>
-		  </iso:report>
-		  <iso:report test="atom:id">
-		    <sl:uri select="$feedURI"/>
-		    <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#id</sl:uri>
-		    <sl:typedLiteral datatype="http://www.w3.org/2001/XMLSchema#anyURI" select="atom:id"/>
-		  </iso:report>
-		  <iso:report test="atom:updated">
-		    <sl:uri select="$feedURI"/>
-		    <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#updated</sl:uri>
-		    <sl:typedLiteral datatype="http://www.w3.org/2001/XMLSchema#dateTime" select="atom:updated"/>
-		  </iso:report>
-		</iso:rule>
+	  <iso:rule context="/atom:feed">
+	    <iso:extends rule="required"/>
+	    <iso:assert test="atom:title">This element must be present for the feed to be valid</iso:assert>
+	  </iso:rule>
 	  <iso:rule context="/atom:feed/atom:link">
-		  <iso:extends rule="link"/>
+		  <iso:extends rule="links"/>
 		</iso:rule>
 	</iso:pattern>
   
   <iso:pattern>
-    <iso:title>Required elements for Atom Entry</iso:title>
+    <iso:title>Atom Entry</iso:title>
     <iso:rule context="/atom:feed/atom:entry">
+      <iso:extends rule="required"/>
       
       <iso:let name="entryURI" value="concat($feedURI, '/entries/', substring-after(atom:id, 'urn:uuid:'))"/>
       
@@ -86,24 +87,9 @@
         <sl:uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</sl:uri>
         <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#Entry</sl:uri>
       </iso:report>
-      <iso:report test="atom:title">
-        <sl:uri select="$entryURI"/>
-        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#title</sl:uri>
-        <sl:plainLiteral xml:lang="en-GB" select="atom:title"/>
-      </iso:report>
-      <iso:report test="atom:id">
-        <sl:uri select="$entryURI"/>
-        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#id</sl:uri>
-        <sl:typedLiteral datatype="http://www.w3.org/2001/XMLSchema#anyURI" select="atom:id"/>
-      </iso:report>
-      <iso:report test="atom:updated" >
-        <sl:uri select="$entryURI"/>
-        <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#updated</sl:uri>
-        <sl:typedLiteral datatype="http://www.w3.org/2001/XMLSchema#dateTime" select="atom:updated"/>
-      </iso:report>
     </iso:rule>
     <iso:rule context="/atom:feed/atom:entry/atom:link">
-      <iso:extends rule="link"/>
+      <iso:extends rule="links"/>
     </iso:rule>
   </iso:pattern>
 </iso:schema>
