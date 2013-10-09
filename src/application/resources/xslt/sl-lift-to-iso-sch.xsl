@@ -40,11 +40,17 @@
   
   
   <xd:doc>Copy similarly named elements.</xd:doc>
-  <xsl:template match="sl:assert | sl:extends | sl:let | sl:pattern | sl:phase | sl:rule | sl:title" mode="sl:translate">
+  <xsl:template match="sl:assert | sl:extends | sl:pattern | sl:phase | sl:rule | sl:title" mode="sl:translate">
     <xsl:element name="iso:{local-name()}" namespace="http://purl.oclc.org/dsdl/schematron">
       <xsl:apply-templates select="@*" mode="sl:attributes"/>
       <xsl:apply-templates select="* | text()" mode="#current"/>
     </xsl:element>
+  </xsl:template>
+  
+  
+  <xd:doc>Converts a variable to a let instruction.</xd:doc>
+  <xsl:template match="sl:variable" mode="sl:translate">
+    <iso:let name="{@name}" value="{@select}"/>
   </xsl:template>
   
   
