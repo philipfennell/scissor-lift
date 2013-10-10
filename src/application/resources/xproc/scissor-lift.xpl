@@ -31,12 +31,21 @@
   <p:serialization port="result" encoding="UTF-8" indent="true" 
       media-type="application/xml" method="xml"/>
   
-  
-  <p:xslt name="include">
-    <p:documentation>First, preprocess your Schematron schema with iso_dsdl_include.xsl.</p:documentation>
+  <p:xslt name="translate">
+    <p:documentation>Translate the LiftML mapping to the augmented ISO Schematron.</p:documentation>
     <p:input port="source">
       <p:pipe port="mapping" step="scissor-lift"/>
     </p:input>
+    <p:input port="stylesheet">
+      <p:document href="xslt/sl-lift-to-iso-sch.xsl"/>
+    </p:input>
+    <p:input port="parameters">
+      <p:empty/>
+    </p:input>
+  </p:xslt>
+  
+  <p:xslt name="include">
+    <p:documentation>First, preprocess your Schematron schema with iso_dsdl_include.xsl.</p:documentation>
     <p:input port="stylesheet">
       <p:document href="xslt/scissor-lift-include.xsl"/>
     </p:input>
@@ -81,21 +90,29 @@
     </p:input>
   </p:xslt>
   
-  <!--<p:choose>
+  <p:choose>
     <p:documentation>Select an output representation.</p:documentation>
     <p:when test="$representation eq 'ntriples'">
       <p:xslt name="n-triples">
         <p:documentation>Third, compile the Schematron schema into an XSLT script.</p:documentation>
         <p:input port="stylesheet">
-          <p:document href="xslt/ntriples/trix-to-ntriples.xsl"/>
+          <p:document href="xslt/ntriples/sl-trix-to-ntriples.xsl"/>
         </p:input>
         <p:input port="parameters">
           <p:empty/>
         </p:input>
       </p:xslt>
+      
+      <p:store href="graphs/test.nt" encoding="UTF-8" indent="true" media-type="text/plain" method="text"/>
+      
+      <p:identity>
+        <p:input port="source">
+          <p:pipe port="result" step="graph"/>
+        </p:input>
+      </p:identity>
     </p:when>
     <p:when test="$representation eq 'rdfxml'">
-      <p:xslt name="n-triples">
+      <p:xslt name="rdf-xml">
         <p:documentation>Third, compile the Schematron schema into an XSLT script.</p:documentation>
         <p:input port="stylesheet">
           <p:document href="xslt/rdf-xml/trix-to-rdf-xml.xsl"/>
@@ -108,5 +125,5 @@
     <p:otherwise>
       <p:identity/>
     </p:otherwise>
-  </p:choose>-->
+  </p:choose>
 </p:declare-step>
