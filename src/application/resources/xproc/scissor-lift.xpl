@@ -94,7 +94,7 @@
     <p:documentation>Select an output representation.</p:documentation>
     <p:when test="$representation eq 'ntriples'">
       <p:xslt name="n-triples">
-        <p:documentation>Third, compile the Schematron schema into an XSLT script.</p:documentation>
+        <p:documentation>Transform to N-Triples.</p:documentation>
         <p:input port="stylesheet">
           <p:document href="xslt/ntriples/sl-trix-to-ntriples.xsl"/>
         </p:input>
@@ -103,17 +103,14 @@
         </p:input>
       </p:xslt>
       
-      <p:store href="graphs/test.nt" encoding="UTF-8" indent="true" media-type="text/plain" method="text"/>
-      
-      <p:identity>
-        <p:input port="source">
-          <p:pipe port="result" step="graph"/>
-        </p:input>
-      </p:identity>
+      <p:store encoding="UTF-8" indent="true" media-type="text/plain" method="text">
+        <p:with-option name="href" select="concat('graphs/', substring-before(tokenize(base-uri(), '/')[last()], '.xml'), '.nt')"/>
+        <p:documentation>XProc 1.0 cannot handle text output from a step so pushing the N-Triples to the file-system from here.</p:documentation>
+      </p:store>
     </p:when>
     <p:when test="$representation eq 'rdfxml'">
       <p:xslt name="rdf-xml">
-        <p:documentation>Third, compile the Schematron schema into an XSLT script.</p:documentation>
+        <p:documentation>Transform to RDF XML.</p:documentation>
         <p:input port="stylesheet">
           <p:document href="xslt/rdf-xml/trix-to-rdf-xml.xsl"/>
         </p:input>
@@ -121,9 +118,17 @@
           <p:empty/>
         </p:input>
       </p:xslt>
+      
+      <p:store encoding="UTF-8" indent="true" media-type="application/rdf+xml" method="xml">
+        <p:with-option name="href" select="concat('graphs/', substring-before(tokenize(base-uri(), '/')[last()], '.xml'), '.rdf')"/>
+        <p:documentation>Pushing the RDF/XML to the file-system from here.</p:documentation>
+      </p:store>
     </p:when>
-    <p:otherwise>
-      <p:identity/>
-    </p:otherwise>
   </p:choose>
+  
+  <p:identity>
+    <p:input port="source">
+      <p:pipe port="result" step="graph"/>
+    </p:input>
+  </p:identity>
 </p:declare-step>
