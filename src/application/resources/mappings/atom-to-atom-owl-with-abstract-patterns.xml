@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lift
+    xmlns="https://github.com/philipfennell/scissor-lift"
+    xmlns:atom="http://www.w3.org/2005/Atom"
+    xmlns:aowl="http://bblfish.net/work/atom-owl/2006-06-06/#" 
+    name="atom-to-atom-owl"
+    version="1.0">
+  <title>Simple Atom Feed Rules</title>
+  <graph uri="http://example.org/feeds"/>
+  
+  <variable name="feedURI" select="concat('http://example.org/feeds/', substring-after(/atom:feed/atom:id, 'urn:uuid:'))"/>
+  
+  <pattern abstract="true" id="required">
+    <title>Abstract Required</title>
+  
+    <rule context="$context">
+      <assert match="atom:title">atom:title is a required element.</assert>
+      <triple match="atom:title">
+        <uri select="$thisURI"/>
+        <uri>http://bblfish.net/work/atom-owl/2006-06-06/#title</uri>
+        <plainLiteral xml:lang="en-GB" select="atom:title"/>
+      </triple>
+      <triple match="atom:id">
+        <uri select="$thisURI"/>
+        <uri>http://bblfish.net/work/atom-owl/2006-06-06/#id</uri>
+        <typedLiteral datatype="http://www.w3.org/2001/XMLSchema#anyURI" select="atom:id"/>
+      </triple>
+      <triple match="atom:updated">
+        <uri select="$thisURI"/>
+        <uri>http://bblfish.net/work/atom-owl/2006-06-06/#updated</uri>
+        <typedLiteral datatype="http://www.w3.org/2001/XMLSchema#dateTime" select="atom:updated"/>
+      </triple>
+    </rule>
+  </pattern>
+  
+  <pattern abstract="true" id="links">
+    <title>Abstract Links</title>
+    
+    <rule context="$context">
+      <triple match="." >
+        <uri select="$thisURI"/>
+        <uri>http://bblfish.net/work/atom-owl/2006-06-06/#link</uri>
+        <id select="."/>
+      </triple>
+      <triple match="." >
+        <id select="."/>
+        <uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</uri>
+        <uri>http://bblfish.net/work/atom-owl/2006-06-06/#Link</uri>
+      </triple>
+      <triple match="." >
+        <id select="."/>
+        <uri>http://bblfish.net/work/atom-owl/2006-06-06/#to</uri>
+        <id select="@href"/>
+      </triple>
+      <triple match="@href" >
+        <id select="@href"/>
+        <uri>http://bblfish.net/work/atom-owl/2006-06-06/#src</uri>
+        <uri select="@href"/>
+      </triple>
+    </rule>
+  </pattern>
+  
+  
+  
+  
+  <pattern>
+    <title>Atom Feed Root</title>
+    <rule context="/">
+      <triple match="atom:feed">
+        <uri select="$feedURI"/>
+        <uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</uri>
+        <uri>http://bblfish.net/work/atom-owl/2006-06-06/#Feed</uri>
+      </triple>
+    </rule>
+  </pattern>
+  
+  <pattern id="feed-required" is-a="required">
+    <title>Feed Required</title>
+    <param name="context" select="/atom:feed"/>
+    <param name="thisURI" select="$feedURI"/>
+  </pattern>
+  
+  <pattern id="feed-links" is-a="links">
+    <title>Feed Links</title>
+    <param name="context" select="/atom:feed/atom:link"/>
+    <param name="thisURI" select="$feedURI"/>
+  </pattern>
+  
+  
+  
+  <pattern>
+    <title>Atom Entry</title>
+    <rule context="/atom:feed/atom:entry">
+      
+      <variable name="entryURI" select="concat($feedURI, '/entries/', substring-after(atom:id, 'urn:uuid:'))"/>
+      
+      <triple match=".">
+        <uri template="http://example.org/feeds/{feedID}/entries/{entryID}">
+          <param name="feedID" select="substring-after(/atom:feed/atom:id, 'urn:uuid:')" type="xs:string"/>
+          <param name="entryID" select="substring-after(atom:id, 'urn:uuid:')" type="xs:string"/>
+        </uri>
+        <uri>http://www.w3.org/1999/02/22-rdf-syntax-ns#type</uri>
+        <uri>http://bblfish.net/work/atom-owl/2006-06-06/#Entry</uri>
+      </triple>
+    </rule>
+  </pattern>
+  
+  <pattern id="entry-required" is-a="required">
+    <title>Entry Required</title>
+    <param name="context" select="/atom:feed/atom:entry"/>
+    <param name="thisURI" select="concat($feedURI, '/entries/', substring-after(atom:id, 'urn:uuid:'))"/>
+  </pattern>
+  
+  <pattern id="entry-links" is-a="links">
+    <title>Entry Links</title>
+    <param name="context" select="/atom:feed/atom:entry/atom:link"/>
+    <param name="thisURI" select="concat($feedURI, '/entries/', substring-after(../atom:id, 'urn:uuid:'))"/>
+  </pattern>
+  
+</lift>
