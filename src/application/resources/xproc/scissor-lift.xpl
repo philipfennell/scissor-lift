@@ -14,6 +14,9 @@
   
   <p:input port="source" primary="true"/>
   <p:input port="mapping"/>
+  <p:output port="translate">
+    <p:pipe port="result" step="translate"/>
+  </p:output>
   <p:output port="include">
     <p:pipe port="result" step="include"/>
   </p:output>
@@ -26,10 +29,16 @@
   <p:output port="result" primary="true"/>
   
   
+  <p:serialization port="translate" encoding="UTF-8" indent="true" 
+      media-type="application/xml" method="xml"/>
+  <p:serialization port="include" encoding="UTF-8" indent="true" 
+      media-type="application/xml" method="xml"/>
+  <p:serialization port="expand" encoding="UTF-8" indent="true" 
+      media-type="application/xml" method="xml"/>
   <p:serialization port="compile" encoding="UTF-8" indent="true" 
       media-type="application/xml" method="xml"/>
   <p:serialization port="result" encoding="UTF-8" indent="true" 
-      media-type="application/xml" method="xml"/>
+      media-type="application/xml" method="xml" omit-xml-declaration="false"/>
   
   <p:xslt name="translate">
     <p:documentation>Translate the LiftML mapping to the augmented ISO Schematron.</p:documentation>
@@ -103,7 +112,8 @@
         </p:input>
       </p:xslt>
       
-      <p:store encoding="UTF-8" indent="true" media-type="text/plain" method="text">
+      <p:store encoding="UTF-8" indent="true" media-type="text/plain" 
+          method="text">
         <p:with-option name="href" select="concat('graphs/', substring-before(tokenize(base-uri(), '/')[last()], '.xml'), '.nt')"/>
         <p:documentation>XProc 1.0 cannot handle text output from a step so pushing the N-Triples to the file-system from here.</p:documentation>
       </p:store>
@@ -112,18 +122,22 @@
       <p:xslt name="rdf-xml">
         <p:documentation>Transform to RDF XML.</p:documentation>
         <p:input port="stylesheet">
-          <p:document href="xslt/rdf-xml/trix-to-rdf-xml.xsl"/>
+          <p:document href="xslt/rdf-xml/core.xsl"/>
         </p:input>
         <p:input port="parameters">
           <p:empty/>
         </p:input>
       </p:xslt>
       
-      <p:store encoding="UTF-8" indent="true" media-type="application/rdf+xml" method="xml">
+      <p:store encoding="UTF-8" indent="true" media-type="application/rdf+xml" 
+          method="xml" omit-xml-declaration="false">
         <p:with-option name="href" select="concat('graphs/', substring-before(tokenize(base-uri(), '/')[last()], '.xml'), '.rdf')"/>
         <p:documentation>Pushing the RDF/XML to the file-system from here.</p:documentation>
       </p:store>
     </p:when>
+    <p:otherwise>
+      <p:sink/>
+    </p:otherwise>
   </p:choose>
   
   <p:identity>
