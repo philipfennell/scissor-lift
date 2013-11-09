@@ -99,7 +99,7 @@
 
     <trix><!--  title="{$title}" schemaVersion="{$schemaVersion}" -->
       <graph>
-        <uri/>
+        <uri><xsl:value-of select="sl:graph/@uri"/></uri>
         <xsl:if test=" string-length( normalize-space( $phase )) &gt; 0 and 
   		not( normalize-space( $phase ) = '#ALL') ">
           <axsl:attribute name="phase">
@@ -525,13 +525,6 @@
 
   <!-- Overrides skeleton -->
   <xsl:template match="sl:uri" mode="text">
-    <xsl:if test="not(@select | @template)">
-      <xsl:message>
-        <xsl:call-template name="outputLocalizedMessage">
-          <xsl:with-param name="number">34</xsl:with-param>
-        </xsl:call-template>
-      </xsl:message>
-    </xsl:if>
     <xsl:call-template name="IamEmpty"/>
     
     <uri>
