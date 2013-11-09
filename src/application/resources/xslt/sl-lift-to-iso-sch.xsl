@@ -48,6 +48,16 @@
   </xsl:template>
   
   
+  <xd:doc>Change param's select attribute to value.</xd:doc>
+  <xsl:template match="sl:param" mode="sl:translate">
+    <xsl:element name="iso:{local-name()}" namespace="http://purl.oclc.org/dsdl/schematron">
+      <xsl:apply-templates select="@* except (@select)" mode="sl:attributes"/>
+      <xsl:attribute name="value" select="@select"/>
+      <xsl:apply-templates select="* | text()" mode="#current"/>
+    </xsl:element>
+  </xsl:template>
+  
+  
   <xd:doc>Converts a variable to a let instruction.</xd:doc>
   <xsl:template match="sl:variable" mode="sl:translate">
     <iso:let name="{@name}" value="{@select}"/>
@@ -72,6 +82,15 @@
       <xsl:apply-templates select="@*" mode="sl:attributes"/>
       <xsl:apply-templates select="* | text()" mode="sl:triples"/>
     </iso:report>
+  </xsl:template>
+  
+  
+  <xd:doc>Named Graph URI.</xd:doc>
+  <xsl:template match="sl:graph" mode="sl:translate">
+    <xsl:element name="sl:{local-name()}" namespace="https://github.com/philipfennell/scissor-lift">
+      <xsl:apply-templates select="@*" mode="sl:attributes"/>
+      <xsl:apply-templates select="* | text()" mode="#current"/>
+    </xsl:element>
   </xsl:template>
   
   
