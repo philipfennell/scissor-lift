@@ -13,7 +13,7 @@
     <iso:rule id="links" abstract="true">
       <iso:let name="entryURI" value="concat($feedURI, '/entries/', substring-after(../atom:id, 'urn:uuid:'))"/>
       
-      <iso:report test="." >
+      <iso:report test=".">
         <sl:uri select="$entryURI"/>
         <sl:uri>http://bblfish.net/work/atom-owl/2006-06-06/#link</sl:uri>
         <sl:id select="."/>
