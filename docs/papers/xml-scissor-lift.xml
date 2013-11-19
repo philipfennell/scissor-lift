@@ -5,13 +5,50 @@
   <info>
     <title>Patterns for Translating XML to RDF</title>
     <subtitle>A framework for translating XML information to RDF</subtitle>
+    <keywordset>
+      <keyword>xml</keyword>
+      <keyword>rdf</keyword>
+      <keyword>semantic web</keyword>
+      <keyword>schema</keyword>
+      <keyword>ontology</keyword>
+      <keyword>xsd</keyword>
+      <keyword>owl</keyword>
+      <keyword>schematron</keyword>
+      <keyword>xslt</keyword>
+      <keyword>xquery</keyword>
+    </keywordset>
     <abstract>
       <para></para>
     </abstract>
   </info>
   <section>
     <title>Introduction</title>
-    <para></para>
+    <para>The common models for information modelling generally fall into the categories of lists,
+      tables, trees and graphs. Where organisations are seeking fresh insights into relationships
+      between entities and information stored in relational tables they are now frequently turning
+      to graph models, like RDF, to organise and query relationships. Whilst specifications, and
+      tools that implement them, already exist for Relational to RDF mappings the same cannot be
+      said for XML.</para>
+    <para>XML works best when it is utilised for semi-structured, hierarchical content models. When
+      dealing with publications there is, usually embedded within the document, metadata that
+      describes properties of the document like revision, subject and it may also identify agents
+      (authors, editors, publishers and the like) who have played some part in shaping the content
+      of the publication. Lifting such information out of the document and away from document
+      centric query languages and into the broader realm of RDF and Linked Open Data facilitates
+      discovery, inter-linking, sharing of information much in the same way as doing so for
+      relational data.</para>
+    <para>Apart from implementing the mapping programmatic fashion, which renders the solution
+      implementation dependant, the relational mapping processes can follow either a direct approach
+      where the vocabulary terms are derived directly from the column names or, alternatively, one
+      can create explicit mappings between column names and a target ontology. XML mappings to RDF
+      can also follow both the programmatic and direct mapping routes and be hindered by the same
+      short comings. However, XML has to alternate routes that are built on grammar and rule based
+      mechanisms. The first of these relies upon annotations to an XML Schema that identify the
+      mappings between schema types and ontology types and properties; this method is commonly known
+      as Schema Lifting and was first defined as part within the Web Services Stack as Semantic
+      Annotations for WSDL and XML Schema (SAWSDL)  The other approach is rule based and can utilise
+      Schematron Reporting Rules to identify the context for mapping between XML nodes and ontology
+      classes and properties.</para>
   </section>
   <section>
     <title>State the problem?</title>
@@ -37,8 +74,8 @@
     <title>Summary and Conclusions</title>
     <para></para>
   </section>
-  <section>
+  <!--<bibliography xml:id="references">
     <title>References</title>
-    <para></para>
-  </section>
+    
+  </bibliography>-->
 </article>
