@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://docbook.org/xml/5.0/rng/docbook.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<article xmlns="http://docbook.org/ns/docbook" xmlns:xlink="http://www.w3.org/1999/xlink" version="5.0">
+  <info>
+    <title>Patterns for Translating XML to RDF</title>
+    <subtitle>A framework for translating XML information to RDF</subtitle>
+    <abstract>
+      <para></para>
+    </abstract>
+  </info>
+  <section>
+    <title>Introduction</title>
+    <para></para>
+  </section>
+  <section>
+    <title>State the problem?</title>
+    <para></para>
+  </section>
+  <section>
+    <title>What's the current state-of-the-art?</title>
+    <para>Is this the place to talk about SOX?</para>
+  </section>
+  <section>
+    <title>What's the solution?</title>
+    <para>Talk about XML Scissor-Lift</para>
+  </section>
+  <section>
+    <title>How do the two approaches compare?</title>
+    <para></para>
+  </section>
+  <section>
+    <title>Future Work</title>
+    <para></para>
+  </section>
+  <section>
+    <title>Summary and Conclusions</title>
+    <para></para>
+  </section>
+  <section>
+    <title>References</title>
+    <para></para>
+  </section>
+</article>
