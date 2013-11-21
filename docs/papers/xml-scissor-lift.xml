@@ -25,17 +25,21 @@
     <title>Introduction</title>
     <para>The common models for information storage mainly fall into the categories of tables, trees
       and graphs. Where organisations are seeking fresh insights into relationships between entities
-      and information that is stored in relational tables they are now frequently turning to graph
-      models, like RDF, to organise and query relationships. Whilst specifications, and tools that
-      implement them, already exist for Relational to RDF mappings the same cannot so easily be said
-      for XML.</para>
-    <para>When dealing with publications there is, usually embedded within the document, metadata
-      that describes simple properties of the document like revision and subject categories. The
-      metadata may also identify agents (authors, editors, publishers and the like) who have played
-      some part in shaping the content of the publication. Lifting such information out of the
-      document and away from document centric query languages and into the broader realm of RDF
-      affords the same opportunities for discovering and managing relationships between across a
+      and information, that are stored in relational tables, they are now frequently turning to
+      graph models, like RDF, to organise and query relationships. Whilst specifications, and tools
+      that implement them, already exist for Relational to RDF mappings the same cannot so easily be
+      said for XML.</para>
+    <para>Whilst programmatic solutions, written in XSLT or XQuery for example, are often used, it
+      is quite often more desirable to use a Domain Specific Language that will provide a cleaner
+      mechanism for defining the binding of XML nodes to ontology terms.</para>
+    <para>As an example, when dealing with publications there is, usually embedded within the
+      document, metadata that describes simple properties of the document like revision and subject
+      categories. The metadata may also identify agents (authors, editors, publishers and the like)
+      who have played some part in shaping the content of the publication. Lifting such information
+      out of the document and away from document centric query languages and into the broader realm
+      of RDF affords the same opportunities for discovering and managing relationships across a
       wider range of information.</para>
+    <para/>
     <para><!--Apart from implementing the mapping in a programmatic fashion, which renders the solution implementation dependant, the relational mapping processes can follow either a direct approach where the vocabulary terms are derived directly from the column names or, alternatively, one can create explicit mappings between column names and a target ontology. XML mappings to RDF can also follow both the programmatic and direct mapping routes and be hindered by the same short comings. However, XML has to alternate routes that are built on grammar and rule based mechanisms.--></para>
   </section>
   <section>
@@ -73,8 +77,25 @@
   </section>
   <section>
     <title>Rule based mapping</title>
-    <para>Mappings between XML nodes and ontology terms are in actuality composed of three parts
-      which make up ithe RDF triple. We need to define the subject, the predicate and the object. If
+    <para>Mappings between XML nodes and ontology terms are in actuality composed of four
+      parts:</para>
+    <itemizedlist>
+      <listitem>
+        <para>Context</para>
+      </listitem>
+      <listitem>
+        <para>Subject</para>
+      </listitem>
+      <listitem>
+        <para>Predicate</para>
+      </listitem>
+      <listitem>
+        <para>Object</para>
+      </listitem>
+    </itemizedlist>
+    <para>The first part identifying which node contains the information you want to transfer, the
+      other three make up the RDF triple. Looking at the predicate first, this is a static mapping
+      as all that is required is to state the property you are mapping to. The subject and object If
       we approach the mapping in this way we have quite a lot of flexibility in how we achieve
       this</para>
   </section>
