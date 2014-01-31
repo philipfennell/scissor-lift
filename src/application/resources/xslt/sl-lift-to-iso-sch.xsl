@@ -29,7 +29,7 @@
   
   <xd:doc>Root element.</xd:doc>
   <xsl:template match="sl:lift" mode="sl:translate">
-    <iso:schema queryBinding="xpath">
+    <iso:schema queryBinding="xpath2">
       <xsl:namespace name="sl">https://github.com/philipfennell/scissor-lift</xsl:namespace>
       <xsl:for-each select="namespace::*[not(. = ('http://www.w3.org/XML/1998/namespace', 'https://github.com/philipfennell/scissor-lift'))]">
         <iso:ns prefix="{name()}" uri="{.}"/>
