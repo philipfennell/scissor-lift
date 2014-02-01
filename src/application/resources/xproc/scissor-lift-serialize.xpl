@@ -15,6 +15,9 @@
   <p:option name="representation" select="'trix'">
     <p:documentation>Defines the output graph representation and accepts values of: (ntriples | rdfxml | trix). Default is trix.</p:documentation>
   </p:option>
+  <p:option name="outputPath" select="'graphs/'">
+    <p:documentation>Defines the output path for the chosen serialisation format</p:documentation>
+  </p:option>
   
   
   <p:choose>
@@ -32,7 +35,7 @@
       
       <p:store encoding="UTF-8" indent="true" media-type="text/plain" 
         method="text">
-        <p:with-option name="href" select="concat('graphs/', substring-before(tokenize(base-uri(), '/')[last()], '.xml'), '.nt')"/>
+        <p:with-option name="href" select="concat($outputPath, '/', substring-before(tokenize(base-uri(), '/')[last()], '.xml'), '.nt')"/>
         <p:documentation>XProc 1.0 cannot handle text output from a step so pushing the N-Triples to the file-system from here.</p:documentation>
       </p:store>
     </p:when>
@@ -49,7 +52,7 @@
       
       <p:store encoding="UTF-8" indent="true" media-type="application/rdf+xml" 
         method="xml" omit-xml-declaration="false">
-        <p:with-option name="href" select="concat('graphs/', substring-before(tokenize(base-uri(), '/')[last()], '.xml'), '.rdf')"/>
+        <p:with-option name="href" select="concat($outputPath, '/', substring-before(tokenize(base-uri(), '/')[last()], '.xml'), '.rdf')"/>
         <p:documentation>Pushing the RDF/XML to the file-system from here.</p:documentation>
       </p:store>
     </p:when>

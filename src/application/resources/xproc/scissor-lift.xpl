@@ -12,8 +12,11 @@
   
   <p:documentation>Takes a source XML and a scissor-lift mapping, compiles the mapping and applies it to the source document.</p:documentation>
   
-  <p:option name="representation" select="'trix'">
+  <p:option name="representation" select="'ntriples'">
     <p:documentation>Defines the output graph representation and accepts values of: (ntriples | rdfxml | trix). Default is trix.</p:documentation>
+  </p:option>
+  <p:option name="outputPath" select="'graphs/'">
+    <p:documentation>Defines the output path for the chosen serialisation format</p:documentation>
   </p:option>
   
   <p:input port="mapping"/>
@@ -45,6 +48,7 @@
   <sl:serialize>
     <p:documentation>Transforms the default TriX representation into the chosen output serialization.</p:documentation>
     <p:with-option name="representation" select="$representation"/>
+    <p:with-option name="outputPath" select="$outputPath"/>
   </sl:serialize>
   
   <p:identity>
