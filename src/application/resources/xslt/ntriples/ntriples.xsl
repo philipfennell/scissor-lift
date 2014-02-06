@@ -146,9 +146,11 @@
 	<xsl:function name="nt:u-escape-character" as="xs:string?">
 		<xsl:param name="char" as="xs:string?"/>
 		<xsl:variable name="charCode" as="xs:integer" select="string-to-codepoints($char)"/>
+	  <xsl:variable name="unpaddedHexCode" as="xs:string" select="nt:int-to-hex($charCode)"/>
+	  
 		<xsl:value-of select="
-			if ($charCode = (for $n in 127 to 65533 return $n)) then 
-				concat('\u', nt:int-to-hex($charCode))
+			if ($charCode = ( for $n in 127 to 65533 return $n )) then 
+				concat('\u', string-join(( for $n in (1 to (4 - string-length($unpaddedHexCode))) return '0' ), ''), $unpaddedHexCode)
 			else
 				$char"/>
 	</xsl:function>
