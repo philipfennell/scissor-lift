@@ -580,7 +580,10 @@
     <xsl:call-template name="IamEmpty"/>
     
     <plainLiteral>
+      <!-- Copy the language from the definition... -->
       <xsl:copy-of select="@xml:lang" copy-namespaces="no"/>
+      <!-- ...however, if the language is defined on the context node, use that. -->
+      <axsl:copy-of select="{@select}/ancestor-or-self::*[@xml:lang][1]/@xml:lang"/>
       <xsl:choose>
         <xsl:when test="@select">
           <xsl:call-template name="process-value-of">
