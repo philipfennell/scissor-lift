@@ -13,7 +13,7 @@
   <p:documentation>Takes a source XML and a scissor-lift mapping, compiles the mapping and applies it to the source document.</p:documentation>
   
   <p:option name="representation" select="'ntriples'">
-    <p:documentation>Defines the output graph representation and accepts values of: (ntriples | rdfxml | trix). Default is trix.</p:documentation>
+    <p:documentation>Defines the output graph representation and accepts values of: (ntriples | rdfxml | trix | semtriples). Default is trix.</p:documentation>
   </p:option>
   <p:option name="outputPath" select="'graphs/'">
     <p:documentation>Defines the output path for the chosen serialisation format</p:documentation>
