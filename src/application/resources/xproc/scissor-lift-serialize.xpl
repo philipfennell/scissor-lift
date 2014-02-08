@@ -13,7 +13,7 @@
   <p:input port="source"/>
   
   <p:option name="representation" select="'trix'">
-    <p:documentation>Defines the output graph representation and accepts values of: (ntriples | rdfxml | trix). Default is trix.</p:documentation>
+    <p:documentation>Defines the output graph representation and accepts values of: (ntriples | rdfxml | trix | semtriples). Default is trix.</p:documentation>
   </p:option>
   <p:option name="outputPath" select="'graphs/'">
     <p:documentation>Defines the output path for the chosen serialisation format</p:documentation>
@@ -33,12 +33,28 @@
         </p:input>
       </p:xslt>
       
-      <p:store encoding="UTF-8" indent="true" media-type="text/plain" 
-        method="text">
+      <p:store encoding="UTF-8" indent="true" media-type="text/plain" method="text">
         <p:with-option name="href" select="concat($outputPath, '/', substring-before(tokenize(base-uri(), '/')[last()], '.xml'), '.nt')"/>
         <p:documentation>XProc 1.0 cannot handle text output from a step so pushing the N-Triples to the file-system from here.</p:documentation>
       </p:store>
     </p:when>
+    
+    <p:when test="$representation eq 'semtriples'">
+      <p:xslt name="sem-triples">
+        <p:documentation>Transform to MarkLogic sem:triples.</p:documentation>
+        <p:input port="stylesheet">
+          <p:document href="xslt/marklogic/sl-trix-to-sem-triples.xsl"/>
+        </p:input>
+        <p:input port="parameters">
+          <p:empty/>
+        </p:input>
+      </p:xslt>
+      
+      <p:store encoding="UTF-8" indent="true" media-type="application/xml" method="xml">
+        <p:with-option name="href" select="concat($outputPath, '/', substring-before(tokenize(base-uri(), '/')[last()], '.xml'), '.xml')"/>
+      </p:store>
+    </p:when>
+    
     <p:when test="$representation eq 'rdfxml'">
       <p:xslt name="rdf-xml">
         <p:documentation>Transform to RDF XML.</p:documentation>
@@ -56,6 +72,7 @@
         <p:documentation>Pushing the RDF/XML to the file-system from here.</p:documentation>
       </p:store>
     </p:when>
+    
     <p:otherwise>
       <p:sink/>
     </p:otherwise>
