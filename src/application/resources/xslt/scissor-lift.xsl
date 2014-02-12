@@ -15,13 +15,15 @@
 
 <xsl:transform 
     xmlns="http://www.w3.org/2004/03/trix/trix-1/"
-    xmlns:sl="https://github.com/philipfennell/scissor-lift"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
     xmlns:axsl="http://www.w3.org/1999/XSL/TransformAlias" 
-    xmlns:schold="http://www.ascc.net/xml/schematron" 
     xmlns:iso="http://purl.oclc.org/dsdl/schematron" 
+    xmlns:sc="http://marklogic.com/xdmp/schema-components"
+    xmlns:schold="http://www.ascc.net/xml/schematron" 
+    xmlns:sl="https://github.com/philipfennell/scissor-lift"
     xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
+    xmlns:xdmp="http://marklogic.com/xdmp"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     version="2.0">
 
   <!-- Select the import statement and adjust the path as 
@@ -610,7 +612,13 @@
     <xsl:call-template name="IamEmpty"/>
     
     <typedLiteral>
-      <xsl:copy-of select="@datatype" copy-namespaces="no"/>
+      <axsl:variable name="contextType" as="xs:string" select="string(xdmp:describe(sc:type({@select})))"/>
+      <axsl:variable name="baseType" as="xs:string?" select="if (exists(sc:simple-type({@select}))) then string(sc:component-property('base', sc:simple-type({@select}))) else ()"/>
+      <axsl:variable name="dataType" as="xs:string" select="concat('http://www.w3.org/2001/XMLSchema', replace((if (starts-with($contextType, '#xs')) then $contextType else $baseType), 'xsd:|xs:', ''))"/>
+      <!--<xsl:copy-of select="@datatype" copy-namespaces="no"/>-->
+      
+      <axsl:attribute name="datatype" select="(@datatype, $dataType)[1]"/>
+      
       <xsl:choose>
         <xsl:when test="@select">
           <xsl:call-template name="process-value-of">
