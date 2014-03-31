@@ -22,6 +22,7 @@
     xmlns:sl="https://github.com/philipfennell/scissor-lift"
     xmlns:svrl="http://purl.oclc.org/dsdl/svrl"
     xmlns:xdmp="http://marklogic.com/xdmp"
+    xmlns:xhtml="http://www.w3.org/1999/xhtml"
     xmlns:xs="http://www.w3.org/2001/XMLSchema" 
     xmlns:xsl="http://www.w3.org/1999/XSL/Transform" 
     version="2.0">
@@ -68,10 +69,26 @@
 
   <!-- Experimental: If this file called, then must be generating svrl -->
   <xsl:variable name="svrlTest" select="true()"/>
-
-
+  
 
   <!-- ================================================================ -->
+  
+  
+  <!-- Using XSLT 2 -->
+  <xsl:template match="iso:schema[@queryBinding='xslt2' or @queryBinding ='xpath2']" priority="10">
+    <axsl:transform
+        xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+        xmlns:saxon="http://saxon.sf.net/" 
+        exclude-result-prefixes="#all">
+      <xsl:apply-templates select="iso:ns" />
+      <!-- Handle the namespaces before the version attribute: reported to help SAXON -->
+      <xsl:attribute name="version">2.0</xsl:attribute>
+      
+      <xsl:apply-templates select="." mode="stylesheetbody"/>
+    </axsl:transform>
+  </xsl:template>
+  
 
   <xsl:template name="process-prolog">
     <axsl:output method="xml" omit-xml-declaration="no" standalone="yes" indent="yes">
@@ -210,6 +227,7 @@
     <xsl:param name="lang"/>
     <xsl:param name="see"/>
     <xsl:param name="space"/>
+    
     <triple><!-- test="{$test}" -->
       <xsl:if test=" string-length( $id ) &gt; 0">
         <axsl:attribute name="id">
@@ -612,12 +630,16 @@
     <xsl:call-template name="IamEmpty"/>
     
     <typedLiteral>
-      <axsl:variable name="contextType" as="xs:string" select="string(xdmp:describe(sc:type({@select})))"/>
-      <axsl:variable name="baseType" as="xs:string?" select="if (exists(sc:simple-type({@select}))) then string(sc:component-property('base', sc:simple-type({@select}))) else ()"/>
-      <axsl:variable name="dataType" as="xs:string" select="concat('http://www.w3.org/2001/XMLSchema', replace((if (starts-with($contextType, '#xs')) then $contextType else $baseType), 'xsd:|xs:', ''))"/>
-      <!--<xsl:copy-of select="@datatype" copy-namespaces="no"/>-->
+      <axsl:variable name="contextType" as="xs:string" select="if (exists({@select})) then string(xdmp:describe(sc:type({@select}))) else '#xs:string'"
+          use-when="starts-with(system-property('xsl:product-name'), 'MarkLogic')"/>
+      <axsl:variable name="baseType" as="xs:string" select="if (exists({@select})) then (if (exists(sc:simple-type({@select}))) then string(sc:component-property('base', sc:simple-type({@select}))) else '#xs:string') else '#xs:string'"
+          use-when="starts-with(system-property('xsl:product-name'), 'MarkLogic')"/>
+      <axsl:variable name="dataType" as="xs:string" select="concat('http://www.w3.org/2001/XMLSchema', replace((if (starts-with($contextType, '#xs')) then $contextType else $baseType), 'xsd:|xs:', ''))"
+          use-when="starts-with(system-property('xsl:product-name'), 'MarkLogic')"/>
+      <axsl:variable name="dataType" as="xs:string" select="'http://www.w3.org/2001/XMLSchema#string'"
+          use-when="not(starts-with(system-property('xsl:product-name'), 'MarkLogic'))"/>
       
-      <axsl:attribute name="datatype" select="(@datatype, $dataType)[1]"/>
+      <axsl:attribute name="datatype" select="({if (exists(@datatype)) then concat('''', @datatype, '''') else '()'}, $dataType)[1]"/>
       
       <xsl:choose>
         <xsl:when test="@select">
