@@ -17,10 +17,11 @@
     </xd:desc>
   </xd:doc>
   
+  <xsl:output encoding="UTF-8" indent="yes" media-type="application/xml" method="xml"/>
   
   
   <xd:doc>Root</xd:doc>
-  <xsl:template match="/trix/graph">
+  <xsl:template match="/trix/graph[triple]">
     <sem:triples>
       <xsl:apply-templates select="triple" mode="trix2sem"/>
     </sem:triples>
@@ -73,5 +74,9 @@
       <xsl:copy-of select="text()"/>
     </sem:object>
   </xsl:template>
+  
+  
+  <xd:doc>Ignore text nodes.</xd:doc>
+  <xsl:template match="text()" mode="#all"/>
   
 </xsl:transform>
