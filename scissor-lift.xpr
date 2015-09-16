@@ -1,13 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="14.2">
+<project version="16.0">
     <meta>
         <filters directoryPatterns="" filePatterns="" positiveFilePatterns="" showHiddenFiles="true"/>
         <options>
-            <serialized version="14.2" xml:space="preserve">
-                <map>
+            <serialized version="16.0" xml:space="preserve">
+                <serializableOrderedMap>
                     <entry>
                         <String>scenario.associations</String>
                         <scenarioAssociation-array>
+                            <scenarioAssociation>
+                                <field name="url">
+                                    <String>src/application/resources/xproc/scissor-lift.xpl</String>
+                                </field>
+                                <field name="scenarioIds">
+                                    <list>
+                                        <String>scissor-lift - TriX</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioTypes">
+                                    <list>
+                                        <String>XPROC</String>
+                                    </list>
+                                </field>
+                            </scenarioAssociation>
+                            <scenarioAssociation>
+                                <field name="url">
+                                    <String>src/application/resources/mappings/atom-to-atom-owl.xml</String>
+                                </field>
+                                <field name="scenarioIds">
+                                    <list>
+                                        <String>scissor-lift-compile</String>
+                                    </list>
+                                </field>
+                                <field name="scenarioTypes">
+                                    <list>
+                                        <String>XPROC</String>
+                                    </list>
+                                </field>
+                            </scenarioAssociation>
                             <scenarioAssociation>
                                 <field name="url">
                                     <String>src/application/resources/xproc/scissor-lift-compile.xpl</String>
@@ -35,21 +65,6 @@
                                 <field name="scenarioTypes">
                                     <list>
                                         <String>XSL</String>
-                                    </list>
-                                </field>
-                            </scenarioAssociation>
-                            <scenarioAssociation>
-                                <field name="url">
-                                    <String>src/application/resources/xproc/scissor-lift.xpl</String>
-                                </field>
-                                <field name="scenarioIds">
-                                    <list>
-                                        <String>scissor-lift - RDF/XML</String>
-                                    </list>
-                                </field>
-                                <field name="scenarioTypes">
-                                    <list>
-                                        <String>XPROC</String>
                                     </list>
                                 </field>
                             </scenarioAssociation>
@@ -750,9 +765,6 @@
                                             <field name="value">
                                                 <String>ntriples</String>
                                             </field>
-                                            <field name="defaultValue">
-                                                <String>'trix'</String>
-                                            </field>
                                         </xprocOption>
                                     </xprocOption-array>
                                 </field>
@@ -954,9 +966,6 @@
                                             <field name="value">
                                                 <String>rdfxml</String>
                                             </field>
-                                            <field name="defaultValue">
-                                                <String>'trix'</String>
-                                            </field>
                                         </xprocOption>
                                     </xprocOption-array>
                                 </field>
@@ -1073,7 +1082,7 @@
                                             </field>
                                             <field name="urls">
                                                 <String-array>
-                                                    <String>${pdu}/src/application/resources/mappings/atom-to-atom-owl-with-abstract-patterns.xml</String>
+                                                    <String>file:/Users/pfennell/Projects/SemanticWeb/scissor-lift/src/application/resources/mappings/atom-to-atom-owl.xml</String>
                                                 </String-array>
                                             </field>
                                         </xprocInputPort>
@@ -1158,8 +1167,16 @@
                                             <field name="value">
                                                 <String></String>
                                             </field>
-                                            <field name="defaultValue">
-                                                <String>'trix'</String>
+                                        </xprocOption>
+                                        <xprocOption>
+                                            <field name="namespaceURI">
+                                                <String></String>
+                                            </field>
+                                            <field name="localName">
+                                                <String>outputPath</String>
+                                            </field>
+                                            <field name="value">
+                                                <null/>
                                             </field>
                                         </xprocOption>
                                     </xprocOption-array>
@@ -1169,6 +1186,14 @@
                                         <xprocParameterPort>
                                             <field name="portName">
                                                 <String>*</String>
+                                            </field>
+                                            <field name="parameters">
+                                                <xprocParameter-array/>
+                                            </field>
+                                        </xprocParameterPort>
+                                        <xprocParameterPort>
+                                            <field name="portName">
+                                                <String>parameters</String>
                                             </field>
                                             <field name="parameters">
                                                 <xprocParameter-array/>
@@ -1267,7 +1292,7 @@
                                             </field>
                                             <field name="urls">
                                                 <String-array>
-                                                    <String>${pdu}/src/application/resources/mappings/atom-to-atom-owl-with-abstract-patterns.xml</String>
+                                                    <String>file:/Users/pfennell/Projects/SemanticWeb/scissor-lift/src/application/resources/mappings/atom-to-atom-owl.xml</String>
                                                 </String-array>
                                             </field>
                                         </xprocInputPort>
@@ -1280,7 +1305,7 @@
                                                 <String>result</String>
                                             </field>
                                             <field name="url">
-                                                <String>${pdu}/src/application/resources/mappings/atom-to-atom-owl-with-abstract-patterns.xsl</String>
+                                                <String>${pdu}/src/application/resources/mappings/atom-to-atom-owl.xsl</String>
                                             </field>
                                             <field name="showInSequenceView">
                                                 <Boolean>false</Boolean>
@@ -1512,6 +1537,9 @@
                                                     <field name="dtdSchemaPublicID">
                                                         <null/>
                                                     </field>
+                                                    <field name="schematronPhase">
+                                                        <null/>
+                                                    </field>
                                                     <field name="type">
                                                         <Integer>2</Integer>
                                                     </field>
@@ -1532,7 +1560,7 @@
                             </validationScenario>
                         </validationScenario-array>
                     </entry>
-                </map>
+                </serializableOrderedMap>
             </serialized>
         </options>
     </meta>
