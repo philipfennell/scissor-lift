@@ -186,7 +186,7 @@
                                     <String></String>
                                 </field>
                                 <field name="inputXSLURL">
-                                    <String>file:/Users/pfennell/Projects/SemanticWeb/scissor-lift/src/application/resources/xslt/ntriples/trix-to-ntriples.xsl</String>
+                                    <String>${pdu}/src/application/resources/xslt/ntriples/trix-to-ntriples.xsl</String>
                                 </field>
                                 <field name="inputXMLURL">
                                     <String>${currentFileURL}</String>
@@ -272,7 +272,7 @@
                                     <String>${currentFileURL}</String>
                                 </field>
                                 <field name="inputXMLURL">
-                                    <String>file:/Users/pfennell/Projects/SemanticWeb/scissor-lift/src/test/results/output.xml</String>
+                                    <String>${pdu}/src/test/results/output.xml</String>
                                 </field>
                                 <field name="defaultScenario">
                                     <Boolean>false</Boolean>
@@ -438,7 +438,7 @@
                                     <String>${currentFileURL}</String>
                                 </field>
                                 <field name="inputXMLURL">
-                                    <String>file:/Users/pfennell/Projects/SemanticWeb/scissor-lift/logs/include.xml</String>
+                                    <String>${pdu}/logs/include.xml</String>
                                 </field>
                                 <field name="defaultScenario">
                                     <Boolean>false</Boolean>
@@ -521,7 +521,7 @@
                                     <String>${currentFileURL}</String>
                                 </field>
                                 <field name="inputXMLURL">
-                                    <String>file:/Users/pfennell/Projects/SemanticWeb/scissor-lift/logs/translate.xml</String>
+                                    <String>${pdu}/logs/translate.xml</String>
                                 </field>
                                 <field name="defaultScenario">
                                     <Boolean>false</Boolean>
@@ -604,7 +604,7 @@
                                     <String>${currentFileURL}</String>
                                 </field>
                                 <field name="inputXMLURL">
-                                    <String>file:/Users/pfennell/Projects/SemanticWeb/scissor-lift/src/application/resources/mappings/atom-to-atom-owl-with-abstract-patterns.xml</String>
+                                    <String>${pdu}/src/application/resources/mappings/atom-to-atom-owl-with-abstract-patterns.xml</String>
                                 </field>
                                 <field name="defaultScenario">
                                     <Boolean>false</Boolean>
@@ -680,7 +680,7 @@
                                             </field>
                                             <field name="urls">
                                                 <String-array>
-                                                    <String>file:/Users/pfennell/Projects/SemanticWeb/scissor-lift/src/application/resources/mappings/atom-to-atom-owl-with-abstract-patterns.xml</String>
+                                                    <String>${pdu}/src/application/resources/mappings/atom-to-atom-owl-with-abstract-patterns.xml</String>
                                                 </String-array>
                                             </field>
                                         </xprocInputPort>
@@ -881,7 +881,7 @@
                                             </field>
                                             <field name="urls">
                                                 <String-array>
-                                                    <String>file:/Users/pfennell/Projects/SemanticWeb/scissor-lift/src/application/resources/mappings/atom-to-atom-owl-with-abstract-patterns.xml</String>
+                                                    <String>${pdu}/src/application/resources/mappings/atom-to-atom-owl-with-abstract-patterns.xml</String>
                                                 </String-array>
                                             </field>
                                         </xprocInputPort>
@@ -1082,7 +1082,7 @@
                                             </field>
                                             <field name="urls">
                                                 <String-array>
-                                                    <String>file:/Users/pfennell/Projects/SemanticWeb/scissor-lift/src/application/resources/mappings/atom-to-atom-owl.xml</String>
+                                                    <String>${pdu}/src/application/resources/mappings/atom-to-atom-owl.xml</String>
                                                 </String-array>
                                             </field>
                                         </xprocInputPort>
@@ -1292,7 +1292,7 @@
                                             </field>
                                             <field name="urls">
                                                 <String-array>
-                                                    <String>file:/Users/pfennell/Projects/SemanticWeb/scissor-lift/src/application/resources/mappings/atom-to-atom-owl.xml</String>
+                                                    <String>${pdu}/src/application/resources/mappings/atom-to-atom-owl.xml</String>
                                                 </String-array>
                                             </field>
                                         </xprocInputPort>
